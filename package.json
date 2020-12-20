@@ -1,0 +1,14 @@
+{
+  "name": "trading-bot",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "undeadlol1",
+  "license": "ISC",
+  "dependencies": {
+    "ccxt": "^1.39.52"
+  }
+}
