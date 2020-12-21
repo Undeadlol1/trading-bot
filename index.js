@@ -2,30 +2,55 @@ let isGoingToSell = false;
 let isGoingToBuy = true;
 let hasCurrency = false;
 
-const priceToSellAt = 646;
-const priceToBuyAt = 645.5;
+let priceToSellAt = undefined;
+let priceToBuyAt = undefined;
 let totalProfit = 0;
+let amountOfDeals = 0;
+
+let ticks = 0;
+
+// TODO: rename
+const percentageDifference = 0.002;
 
 (async function test() {
   const ccxt = require("ccxt");
   const exchange = new ccxt.binance({ enableRateLimit: true });
 
   while (true) {
+    ticks++;
+
     const ticker = await exchange.fetchTicker("ETH/USDT");
-    const tickerPrice = ticker && ticker.close;
-    console.log("ticker.close", tickerPrice);
+    const currentPrice = ticker && ticker.close;
+    console.log("currentPrice", currentPrice.toFixed(2));
+    console.log("priceToBuyAt: ", priceToBuyAt && priceToBuyAt.toFixed(2));
+    console.log("priceToSellAt: ", priceToBuyAt && priceToSellAt.toFixed(2));
+    console.log("amountOfDeals: ", amountOfDeals);
     console.log("totalProfit: ", totalProfit);
     console.log("hasCurrency: ", hasCurrency);
+    console.log("ticks: ", ticks);
 
-    if (!hasCurrency && shouldBuyCurrency(tickerPrice)) {
+    // TODO: improve this?
+    // TODO: use ticker.date instead?
+    if (ticks > 500 && !hasCurrency) {
+      ticks = 0;
+      priceToBuyAt = undefined;
+    }
+
+    if (priceToBuyAt === undefined) {
+      priceToBuyAt = currentPrice - currentPrice * percentageDifference;
+      priceToSellAt = priceToBuyAt + priceToBuyAt * percentageDifference;
+    }
+
+    if (!hasCurrency && shouldBuyCurrency(currentPrice)) {
       console.log("Buying currency.");
       hasCurrency = true;
     }
 
-    if (hasCurrency && shouldSellCurrency(tickerPrice)) {
+    if (hasCurrency && shouldSellCurrency(currentPrice)) {
       console.log("Selling currency.");
-      hasCurrency = false;
-      totalProfit = totalProfit + (priceToBuyAt - priceToSellAt);
+      totalProfit = totalProfit + (priceToSellAt - priceToBuyAt);
+      amountOfDeals++;
+      reset();
     }
   }
 })();
@@ -36,4 +61,11 @@ function shouldSellCurrency(ticker) {
 
 function shouldBuyCurrency(ticker) {
   return ticker <= priceToBuyAt;
+}
+
+function reset() {
+  hasCurrency = false;
+  priceToBuyAt = undefined;
+  priceToSellAt = undefined;
+  ticks = 0;
 }
