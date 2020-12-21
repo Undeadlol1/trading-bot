@@ -1,19 +1,16 @@
-let isGoingToSell = false;
-let isGoingToBuy = true;
-let hasCurrency = false;
-
-let priceToSellAt = undefined;
-let priceToBuyAt = undefined;
+let ticks = 0;
 let totalProfit = 0;
 let amountOfDeals = 0;
-
-let ticks = 0;
-
-// TODO: rename
-const percentageDifference = 0.002;
+let hasCurrency = false;
+let priceToBuyAt = undefined;
+let priceToSellAt = undefined;
+const profitPercentage = 0.002;
+const intervalDuration = 2000;
 
 const ccxt = require("ccxt");
-const exchange = new ccxt.binance({ enableRateLimit: true });
+const exchange = new ccxt.kraken({ enableRateLimit: true });
+
+setInterval(runStrategy, intervalDuration);
 
 async function runStrategy() {
   ticks++;
@@ -36,7 +33,8 @@ async function runStrategy() {
   }
 
   if (priceToBuyAt === undefined) {
-    priceToBuyAt = currentPrice - currentPrice * percentageDifference;
+    console.log('Setting buy and sell prices.')
+    priceToBuyAt = currentPrice - currentPrice * profitPercentage;
     priceToSellAt = currentPrice;
   }
 
@@ -53,8 +51,6 @@ async function runStrategy() {
   }
 }
 
-setInterval(runStrategy, 1000);
-
 function shouldSellCurrency(ticker) {
   return ticker >= priceToSellAt;
 }
@@ -64,8 +60,8 @@ function shouldBuyCurrency(ticker) {
 }
 
 function reset() {
+  ticks = 0;
   hasCurrency = false;
   priceToBuyAt = undefined;
   priceToSellAt = undefined;
-  ticks = 0;
 }
