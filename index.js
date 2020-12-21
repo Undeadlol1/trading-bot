@@ -18,19 +18,9 @@ async function runStrategy() {
 
   const ticker = await exchange.fetchTicker('ETH/USDT');
   const currentPrice = ticker && ticker.close;
-  console.log('currentPrice: ', currentPrice.toFixed(2));
-  console.log('priceToBuyAt: ', priceToBuyAt && priceToBuyAt.toFixed(2));
-  console.log('priceToSellAt: ', priceToBuyAt && priceToSellAt.toFixed(2));
-  console.log('amountOfDeals: ', amountOfDeals);
-  console.log('totalProfit: ', totalProfit);
-  console.log('hasCurrency: ', hasCurrency);
 
-  if (!hasCurrency) {
-   console.log('ticks: ', ticks);
-  }
+  logInfoToConsole(currentPrice);
 
-  // TODO: improve this?
-  // TODO: use ticker.date instead?
   if (ticks > maximumTicks && !hasCurrency) {
     ticks = 0;
     priceToBuyAt = undefined;
@@ -52,6 +42,18 @@ async function runStrategy() {
     totalProfit = totalProfit + (priceToSellAt - priceToBuyAt);
     amountOfDeals++;
     reset();
+  }
+}
+
+function logInfoToConsole(currentPrice) {
+  console.log('currentPrice: ', currentPrice.toFixed(2));
+  console.log('priceToBuyAt: ', priceToBuyAt && priceToBuyAt.toFixed(2));
+  console.log('priceToSellAt: ', priceToBuyAt && priceToSellAt.toFixed(2));
+  console.log('amountOfDeals: ', amountOfDeals);
+  console.log('totalProfit: ', totalProfit);
+  console.log('hasCurrency: ', hasCurrency);
+  if (!hasCurrency) {
+   console.log('ticks: ', ticks);
   }
 }
 
