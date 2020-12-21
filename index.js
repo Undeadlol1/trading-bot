@@ -12,48 +12,48 @@ let ticks = 0;
 // TODO: rename
 const percentageDifference = 0.002;
 
-(async function test() {
-  const ccxt = require("ccxt");
-  const exchange = new ccxt.binance({ enableRateLimit: true });
+const ccxt = require("ccxt");
+const exchange = new ccxt.binance({ enableRateLimit: true });
 
-  while (true) {
-    ticks++;
+async function runStrategy() {
+  ticks++;
 
-    const ticker = await exchange.fetchTicker("ETH/USDT");
-    const currentPrice = ticker && ticker.close;
-    console.log("currentPrice", currentPrice.toFixed(2));
-    console.log("priceToBuyAt: ", priceToBuyAt && priceToBuyAt.toFixed(2));
-    console.log("priceToSellAt: ", priceToBuyAt && priceToSellAt.toFixed(2));
-    console.log("amountOfDeals: ", amountOfDeals);
-    console.log("totalProfit: ", totalProfit);
-    console.log("hasCurrency: ", hasCurrency);
-    console.log("ticks: ", ticks);
+  const ticker = await exchange.fetchTicker("ETH/USDT");
+  const currentPrice = ticker && ticker.close;
+  console.log("currentPrice", currentPrice.toFixed(2));
+  console.log("priceToBuyAt: ", priceToBuyAt && priceToBuyAt.toFixed(2));
+  console.log("priceToSellAt: ", priceToBuyAt && priceToSellAt.toFixed(2));
+  console.log("amountOfDeals: ", amountOfDeals);
+  console.log("totalProfit: ", totalProfit);
+  console.log("hasCurrency: ", hasCurrency);
+  console.log("ticks: ", ticks);
 
-    // TODO: improve this?
-    // TODO: use ticker.date instead?
-    if (ticks > 500 && !hasCurrency) {
-      ticks = 0;
-      priceToBuyAt = undefined;
-    }
-
-    if (priceToBuyAt === undefined) {
-      priceToBuyAt = currentPrice - currentPrice * percentageDifference;
-      priceToSellAt = priceToBuyAt + priceToBuyAt * percentageDifference;
-    }
-
-    if (!hasCurrency && shouldBuyCurrency(currentPrice)) {
-      console.log("Buying currency.");
-      hasCurrency = true;
-    }
-
-    if (hasCurrency && shouldSellCurrency(currentPrice)) {
-      console.log("Selling currency.");
-      totalProfit = totalProfit + (priceToSellAt - priceToBuyAt);
-      amountOfDeals++;
-      reset();
-    }
+  // TODO: improve this?
+  // TODO: use ticker.date instead?
+  if (ticks > 500 && !hasCurrency) {
+    ticks = 0;
+    priceToBuyAt = undefined;
   }
-})();
+
+  if (priceToBuyAt === undefined) {
+    priceToBuyAt = currentPrice - currentPrice * percentageDifference;
+    priceToSellAt = currentPrice;
+  }
+
+  if (!hasCurrency && shouldBuyCurrency(currentPrice)) {
+    console.log("Buying currency.");
+    hasCurrency = true;
+  }
+
+  if (hasCurrency && shouldSellCurrency(currentPrice)) {
+    console.log("Selling currency.");
+    totalProfit = totalProfit + (priceToSellAt - priceToBuyAt);
+    amountOfDeals++;
+    reset();
+  }
+}
+
+setInterval(runStrategy, 1000);
 
 function shouldSellCurrency(ticker) {
   return ticker >= priceToSellAt;
