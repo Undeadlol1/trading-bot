@@ -8,10 +8,10 @@ let ticks = 0;
 let totalProfit = 0;
 let amountOfDeals = 0;
 let hasCurrency = false;
-const maximumTicks = 300;
+const maximumTicks = 150;
 let priceToBuyAt = undefined;
 let priceToSellAt = undefined;
-const intervalDuration = 1000;
+const intervalDuration = 1500;
 const profitPercentage = 0.002;
 
 let isBotPaused = false;
@@ -39,11 +39,11 @@ async function runStrategy() {
   }
 
   if (priceToBuyAt === undefined) {
-    priceToSellAt = currentPrice;
-    priceToBuyAt = currentPrice - currentPrice * profitPercentage;
+    priceToSellAt = currentPrice - currentPrice * profitPercentage;
+    priceToBuyAt = currentPrice - currentPrice * (profitPercentage * 2);
     logger.info('Calculating prices.');
-    logger.info('Price to buy at: ', priceToBuyAt);
-    logger.info('Price to sell at: ', priceToSellAt);
+    logger.info('Price to buy at: ', formatNumber(priceToBuyAt));
+    logger.info('Price to sell at: ', formatNumber(priceToSellAt));
   }
 
   if (!hasCurrency && shouldBuyCurrency(currentPrice)) {
@@ -52,11 +52,13 @@ async function runStrategy() {
   }
 
   if (hasCurrency && shouldSellCurrency(currentPrice)) {
-    logger.info('Selling currency.');
-    totalProfit = totalProfit + (priceToSellAt - priceToBuyAt);
     amountOfDeals++;
-    logger.success('Amount of deals:', amountOfDeals);
-    logger.success('Total profit: ', totalProfit);
+    totalProfit = totalProfit + (priceToSellAt - priceToBuyAt);
+
+    logger.info('Selling currency.');
+    logger.success('Deals:', amountOfDeals);
+    logger.success('Total profit: ', formatNumber(totalProfit));
+
     reset();
     temporarlyPauseBot();
   }
@@ -93,4 +95,8 @@ function reset() {
   hasCurrency = false;
   priceToBuyAt = undefined;
   priceToSellAt = undefined;
+}
+
+function formatNumber(number) {
+  return number && number.toFixed(2);
 }
