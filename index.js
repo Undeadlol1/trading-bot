@@ -41,9 +41,11 @@ async function runStrategy() {
   }
 
   if (priceToBuyAt === undefined) {
-    priceToSellAt = currentPrice - currentPrice * profitPercentage;
-    priceToBuyAt = currentPrice - currentPrice * (profitPercentage * 2);
+    priceToSellAt = currentPrice + currentPrice * profitPercentage;
+    priceToBuyAt = currentPrice;
     logger.info('Calculating prices.');
+    logger.info('Current price: %d', currentPrice);
+    logger.log('Profit percentage: ', profitPercentage);
     logger.info('Price to buy at:  ', formatNumber(priceToBuyAt));
     logger.info('Price to sell at: ', formatNumber(priceToSellAt));
   }
@@ -67,7 +69,7 @@ async function runStrategy() {
 }
 
 function temporarlyPauseBot() {
-  logger.info('Temporarly pausing bot.');
+  logger.pause('Temporarly pausing bot.');
   isBotPaused = true;
   setTimeout(() => (isBotPaused = false), 10000);
 }
