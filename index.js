@@ -45,13 +45,12 @@ async function runStrategy() {
     priceToBuyAt = currentPrice;
     logger.info('Calculating prices.');
     logger.info('Current price: %d', currentPrice);
-    logger.log('Profit percentage: ', profitPercentage);
     logger.info('Price to buy at:  ', formatNumber(priceToBuyAt));
     logger.info('Price to sell at: ', formatNumber(priceToSellAt));
   }
 
   if (!hasCurrency && shouldBuyCurrency(currentPrice)) {
-    logger.info('Buying currency.');
+    logger.pending('Buying currency.');
     hasCurrency = true;
   }
 
@@ -59,9 +58,9 @@ async function runStrategy() {
     amountOfDeals++;
     totalProfit = totalProfit + (priceToSellAt - priceToBuyAt);
 
-    logger.info('Selling currency.');
-    logger.success('Deals:', amountOfDeals);
-    logger.success('Total profit: ', formatNumber(totalProfit));
+    logger.success('Selling currency.');
+    logger.complete('Deals:', amountOfDeals);
+    logger.complete('Total profit: ', formatNumber(totalProfit));
 
     reset();
     temporarlyPauseBot();
