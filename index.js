@@ -25,12 +25,14 @@ async function runStrategy() {
     return;
   }
 
-  const ticker = await exchange.fetchTicker('ETH/USDT');
+  const ticker = await exchange.fetchTicker('ETH/USDT').catch(logger.error);
   const currentPrice = ticker && ticker.close;
 
   ticks++;
 
-  interactiveLogger.info('Current price: %d', currentPrice);
+  if (priceToBuyAt && priceToSellAt) {
+    interactiveLogger.info('Current price: %d', currentPrice);
+  }
 
   if (ticks > maximumTicks && !hasCurrency) {
     logger.warn('Resetting order prices.');
@@ -42,7 +44,7 @@ async function runStrategy() {
     priceToSellAt = currentPrice - currentPrice * profitPercentage;
     priceToBuyAt = currentPrice - currentPrice * (profitPercentage * 2);
     logger.info('Calculating prices.');
-    logger.info('Price to buy at: ', formatNumber(priceToBuyAt));
+    logger.info('Price to buy at:  ', formatNumber(priceToBuyAt));
     logger.info('Price to sell at: ', formatNumber(priceToSellAt));
   }
 

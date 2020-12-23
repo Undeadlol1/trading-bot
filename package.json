@@ -31,6 +31,9 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
+ "signale": {
+    "displayTimestamp": true
+  },
   "name": "trader",
   "author": "undeadlol1",
   "module": "dist/trader.esm.js",
