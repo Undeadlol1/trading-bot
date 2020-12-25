@@ -30,10 +30,6 @@ async function runStrategy() {
 
   ticks++;
 
-  if (priceToBuyAt && priceToSellAt) {
-    interactiveLogger.info('Current price: %d', currentPrice);
-  }
-
   if (ticks > maximumTicks && !hasCurrency) {
     logger.warn('Resetting order prices.');
     ticks = 0;
