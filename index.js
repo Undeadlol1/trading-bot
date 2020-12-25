@@ -41,8 +41,8 @@ async function runStrategy() {
   }
 
   if (priceToBuyAt === undefined) {
-    priceToSellAt = currentPrice + currentPrice * profitPercentage;
-    priceToBuyAt = currentPrice;
+    priceToSellAt = currentPrice + currentPrice * (profitPercentage / 2);
+    priceToBuyAt = currentPrice - currentPrice * (profitPercentage / 2);
     logger.info('Calculating prices.');
     logger.info('Current price: %d', currentPrice);
     logger.info('Price to buy at:  ', formatNumber(priceToBuyAt));
@@ -50,7 +50,7 @@ async function runStrategy() {
   }
 
   if (!hasCurrency && shouldBuyCurrency(currentPrice)) {
-    logger.pending('Buying currency.');
+    logger.await('Buying currency.');
     hasCurrency = true;
   }
 
