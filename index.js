@@ -3,20 +3,18 @@ const logger = require('signale');
 const interactiveLogger = new logger.Signale({
   interactive: true,
 });
+const exchange = new ccxt.binance({ enableRateLimit: false });
 
 let ticks = 0;
 let totalProfit = 0;
 let amountOfDeals = 0;
 let hasCurrency = false;
+let isBotPaused = false;
 const maximumTicks = 150;
 let priceToBuyAt = undefined;
 let priceToSellAt = undefined;
 const intervalDuration = 1500;
 const profitPercentage = 0.002;
-
-let isBotPaused = false;
-
-const exchange = new ccxt.binance({ enableRateLimit: false });
 
 setInterval(runStrategy, intervalDuration);
 
@@ -30,6 +28,10 @@ async function runStrategy() {
 
   ticks++;
 
+  if (priceToBuyAt && priceToSellAt && process.env.NODE_ENV === undefined) {
+    interactiveLogger.info('Current price: %d', currentPrice);
+  }
+
   if (ticks > maximumTicks && !hasCurrency) {
     logger.warn('Resetting order prices.');
     ticks = 0;
@@ -37,36 +39,44 @@ async function runStrategy() {
   }
 
   if (priceToBuyAt === undefined) {
-    priceToSellAt = currentPrice + currentPrice * (profitPercentage / 2);
-    priceToBuyAt = currentPrice - currentPrice * (profitPercentage / 2);
-    logger.info('Calculating prices.');
-    logger.info('Current price: %d', currentPrice);
-    logger.info('Price to buy at:  ', formatNumber(priceToBuyAt));
-    logger.info('Price to sell at: ', formatNumber(priceToSellAt));
+    calculateWhenToBuyAndSell(currentPrice);
   }
 
   if (!hasCurrency && shouldBuyCurrency(currentPrice)) {
-    logger.await('Buying currency.');
+    logger.await('Bought currency.');
     hasCurrency = true;
   }
 
   if (hasCurrency && shouldSellCurrency(currentPrice)) {
-    amountOfDeals++;
-    totalProfit = totalProfit + (priceToSellAt - priceToBuyAt);
-
-    logger.success('Selling currency.');
-    logger.complete('Deals:', amountOfDeals);
-    logger.complete('Total profit: ', formatNumber(totalProfit));
-
-    reset();
-    temporarlyPauseBot();
+    sellCurrencyAndReset();
   }
+}
+
+function calculateWhenToBuyAndSell(currentPrice) {
+  priceToSellAt = currentPrice + currentPrice * (profitPercentage / 2);
+  priceToBuyAt = currentPrice - currentPrice * (profitPercentage / 2);
+  logger.info('Calculating prices.');
+  logger.info('Current price: %d', currentPrice);
+  logger.info('Price to buy at:  ', formatNumber(priceToBuyAt));
+  logger.info('Price to sell at: ', formatNumber(priceToSellAt));
+}
+
+function sellCurrencyAndReset() {
+  amountOfDeals++;
+  totalProfit = totalProfit + (priceToSellAt - priceToBuyAt);
+
+  logger.success('Sold currency.');
+  logger.complete('Deals:', amountOfDeals);
+  logger.complete('Total profit: ', formatNumber(totalProfit));
+
+  reset();
+  temporarlyPauseBot();
 }
 
 function temporarlyPauseBot() {
   logger.pause('Temporarly pausing bot.');
   isBotPaused = true;
-  setTimeout(() => (isBotPaused = false), 10000);
+  setTimeout(() => (isBotPaused = false), 1000 * 60 * 5);
 }
 
 function logInfoToConsole(currentPrice) {
