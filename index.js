@@ -1,5 +1,6 @@
 const ccxt = require('ccxt');
 const logger = require('signale');
+const get = require('lodash/fp/get');
 const interactiveLogger = new logger.Signale({
   interactive: true,
 });
@@ -23,8 +24,10 @@ async function runStrategy() {
     return;
   }
 
-  const ticker = await exchange.fetchTicker('ETH/USDT').catch(logger.error);
-  const currentPrice = ticker && ticker.close;
+  const currentPrice = await exchange
+    .fetchTicker('ETH/USDT')
+    .then(get('close'))
+    .catch(logger.error);
 
   ticks++;
 
@@ -48,7 +51,9 @@ async function runStrategy() {
   }
 
   if (hasCurrency && shouldSellCurrency(currentPrice)) {
-    sellCurrencyAndReset();
+    sellCurrency();
+    resetPrices();
+    temporarlyPauseBot();
   }
 }
 
@@ -61,34 +66,19 @@ function calculateWhenToBuyAndSell(currentPrice) {
   logger.info('Price to sell at: ', formatNumber(priceToSellAt));
 }
 
-function sellCurrencyAndReset() {
+function sellCurrency() {
   amountOfDeals++;
   totalProfit = totalProfit + (priceToSellAt - priceToBuyAt);
 
   logger.success('Sold currency.');
   logger.complete('Deals:', amountOfDeals);
   logger.complete('Total profit: ', formatNumber(totalProfit));
-
-  reset();
-  temporarlyPauseBot();
 }
 
 function temporarlyPauseBot() {
   logger.pause('Temporarly pausing bot.');
   isBotPaused = true;
   setTimeout(() => (isBotPaused = false), 1000 * 60 * 5);
-}
-
-function logInfoToConsole(currentPrice) {
-  logger.log('currentPrice: ', currentPrice.toFixed(2));
-  logger.log('priceToBuyAt: ', priceToBuyAt && priceToBuyAt.toFixed(2));
-  logger.log('priceToSellAt:', priceToBuyAt && priceToSellAt.toFixed(2));
-  logger.log('amountOfDeals:', amountOfDeals);
-  logger.log('totalProfit: ', totalProfit);
-  logger.log('hasCurrency: ', hasCurrency);
-  if (!hasCurrency) {
-    logger.log('ticks: ', ticks);
-  }
 }
 
 function shouldSellCurrency(ticker) {
@@ -99,7 +89,7 @@ function shouldBuyCurrency(ticker) {
   return ticker <= priceToBuyAt;
 }
 
-function reset() {
+function resetPrices() {
   ticks = 0;
   hasCurrency = false;
   priceToBuyAt = undefined;
