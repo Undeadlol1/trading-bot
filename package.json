@@ -14,7 +14,7 @@
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test",
-    "test:watch": "tsdx test --watch",
+    "test:watch": "tsdx test --watch --runInBand --detectOpenHandles",
     "lint": "tsdx lint",
     "prepare": "tsdx build",
     "size": "size-limit",
@@ -49,6 +49,7 @@
     }
   ],
   "dependencies": {
+    "@prisma/client": "^2.19.0",
     "ccxt": "^1.39.52",
     "lodash": "^4.17.20",
     "mongodb": "^3.6.4",
