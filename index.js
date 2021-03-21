@@ -25,7 +25,7 @@ async function runStrategy() {
   }
 
   const currentPrice = await exchange
-    .fetchTicker('ETH/USDT')
+    .fetchTicker('BTC/USDT')
     .then(get('close'))
     .catch(logger.error);
 
