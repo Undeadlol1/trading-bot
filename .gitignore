@@ -36,6 +36,7 @@ dwsync.xml
 *.espressostorage
 
 # Folders & files to ignore
+dist
 dist/*
 node_modules
 candles.csv
