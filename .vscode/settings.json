@@ -1,6 +1,7 @@
 {
     "conventionalCommits.scopes": [
         "entities",
-        "prisma"
+        "prisma",
+        "WIP"
     ]
 }
