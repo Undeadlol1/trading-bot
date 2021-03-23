@@ -13,46 +13,28 @@ generator client {
 model Bot {
   strategy     String
   currentState String
-  isActive     Boolean @default(false)
-
-  botRuns BotRun[]
-
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  isActive     Boolean  @default(false)
+  botRuns      BotRun[]
+  id           String   @id @default(uuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model BotRun {
-  bot   Bot    @relation(fields: [botId], references: [id])
-  botId String @unique
-
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  bot       Bot       @relation(fields: [botId], references: [id])
+  botId     String    @unique
+  Balance   Balance[]
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Balance {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  strategyRunId  String
   initialBalance Float
   currentBalance Float
-
-}
-
-model Profile {
-  id     String  @id @default(uuid())
-  bio    String?
-  user   User    @relation(fields: [userId], references: [id])
-  userId Int     @unique
-}
-
-model User {
-  id      String   @id @default(uuid())
-  email   String   @unique
-  name    String?
-  posts   Post[]
-  profile Profile?
+  strategyRunId  String
+  botRun         BotRun   @relation(fields: [strategyRunId], references: [id])
+  id             String   @id @default(uuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
