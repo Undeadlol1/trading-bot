@@ -1,5 +1,7 @@
+import { Strategy } from '../../dist/entities/Strategy';
+
 export interface Bot {
-  strategy: string;
   isActive: boolean;
+  strategy: Strategy;
   currentState: string;
 }
