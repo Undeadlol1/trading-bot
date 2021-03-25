@@ -35,6 +35,9 @@
   "signale": {
     "displayTimestamp": true
   },
+  "prisma": {
+    "schema": "./src/dbs/prisma/schema.prisma"
+  },
   "name": "trader",
   "author": "undeadlol1",
   "module": "dist/trader.esm.js",
