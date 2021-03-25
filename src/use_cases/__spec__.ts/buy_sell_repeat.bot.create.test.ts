@@ -1,34 +1,40 @@
-import { Bot } from '../../../dist/entities/Bot';
-import { Strategy } from '../../../dist/entities/Strategy';
+import {
+  BuySellRepeatBot,
+  BuySellRepeatBotPayload,
+} from '../../entities/BuySellRepeatBot';
 import { buySellRepeatBot } from '../buy_sell_repeat.bot.create';
-import { StrategyCodeName } from '../../entities/StrategyCodeName';
+import { BuySellRepeatBotRepo } from '../../repositories/buy_sell_repeat_bot.repository';
+import { PrismaClient } from '@prisma/client';
 
-const botStrategy: Strategy = {
-  payload: {},
-  name: StrategyCodeName.buySellRepeat,
+const typicalPayload: BuySellRepeatBotPayload = {
+  buyAt: 10,
+  sellAt: 11,
+  isActive: true,
+  symbolToBuy: 'BTC',
+  symbolToBuyFor: 'USDT',
 };
 
 describe('Create BUY_SELL_REPEAT Bot', () => {
-  it('returns Bot entity', async () => {
-    const createdBot = await buySellRepeatBot(
-      {
-        isActive: true,
-        strategy: botStrategy,
-      },
-      { botRepository: { create: () => Promise.resolve({} as Bot) } }
-    );
-    expect(createdBot.strategy).toEqual(botStrategy);
+  afterAll(async function() {
+    const prisma = new PrismaClient();
+    return prisma.buySellRepeatBot.deleteMany();
   });
 
   it('calls bot repository', async () => {
-    const createFunctionMock = jest.fn(() => Promise.resolve({} as Bot));
-    await buySellRepeatBot(
-      {
-        isActive: true,
-        strategy: botStrategy,
-      },
-      { botRepository: { create: createFunctionMock } }
+    const createFunctionMock = jest.fn(() =>
+      Promise.resolve({} as BuySellRepeatBot)
     );
+    await buySellRepeatBot(typicalPayload, {
+      botRepo: { create: createFunctionMock },
+    });
     expect(createFunctionMock.mock.calls.length === 1).toBeTruthy();
+  });
+
+  it('returns bot entity', async () => {
+    const createdBot = await buySellRepeatBot(typicalPayload, {
+      botRepo: new BuySellRepeatBotRepo(),
+    });
+    expect(createdBot.id).toBeTruthy();
+    expect(createdBot).toMatchObject(typicalPayload);
   });
 });
