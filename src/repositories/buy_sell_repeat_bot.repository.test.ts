@@ -24,5 +24,7 @@ describe('Create BUY_SELL_REPEAT_BOT repo', () => {
     expect(result).toHaveProperty('id');
     expect(result).toHaveProperty('createdAt');
     expect(result).toHaveProperty('updatedAt');
+    expect(result).toHaveProperty('hasSold', false);
+    expect(result).toHaveProperty('hasBought', false);
   });
 });

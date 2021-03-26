@@ -12,4 +12,7 @@ export interface BuySellRepeatBotPayload {
 
 export interface BuySellRepeatBot
   extends BuySellRepeatBotPayload,
-    UsualDatabaseFields {}
+    UsualDatabaseFields {
+  hasSold: boolean;
+  hasBought: boolean;
+}

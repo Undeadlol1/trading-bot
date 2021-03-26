@@ -8,6 +8,8 @@ const bot: BuySellRepeatBot = {
   buyAt: 100,
   sellAt: 110,
   isActive: true,
+  hasSold: false,
+  hasBought: false,
   symbolToBuy: 'BTC',
   symbolToBuyFor: 'USDT',
   createdAt: new Date(),
