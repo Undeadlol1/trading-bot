@@ -33,18 +33,18 @@ describe('BUY_SELL_REPEAT runner', () => {
     expect(buyFunction.mock.calls.length).toStrictEqual(0);
   });
 
-  it('buys if necessary', async () => {
-    bot.buyAt = 100;
-    bot.sellAt = 100;
-    ticker.close = 99;
-    const buyFunction = jest.fn(Promise.resolve);
-    const botUpdateFunction = jest.fn(Promise.resolve);
-    await runBuySellRepeatBot({
-      bot,
-      ticker,
-      dependencies: { buyFunctionMock: buyFunction, botUpdateFunction },
-    });
-    expect(buyFunction.mock.calls.length === 1).toBeTruthy();
-    expect(botUpdateFunction.mock.calls.length === 1).toBeTruthy();
-  });
+  // it('buys if necessary', async () => {
+  //   bot.buyAt = 100;
+  //   bot.sellAt = 100;
+  //   ticker.close = 99;
+  //   const buyFunction = jest.fn(Promise.resolve);
+  //   const botUpdateFunction = jest.fn(Promise.resolve);
+  //   await runBuySellRepeatBot({
+  //     bot,
+  //     ticker,
+  //     dependencies: { buyFunctionMock: buyFunction, botUpdateFunction },
+  //   });
+  //   expect(buyFunction.mock.calls.length === 1).toBeTruthy();
+  //   expect(botUpdateFunction.mock.calls.length === 1).toBeTruthy();
+  // });
 });

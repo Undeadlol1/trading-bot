@@ -11,7 +11,7 @@ const createPayload: BuySellRepeatBotPayload = {
   symbolToBuyFor: 'USDT',
 };
 
-describe('Create BUY_SELL_REPEAT_BOT repo', () => {
+describe('Create BUY_SELL_REPEAT_BOT Repo', () => {
   afterAll(() => prisma.buySellRepeatBot.deleteMany());
 
   it('returns bot entity', async () => {
