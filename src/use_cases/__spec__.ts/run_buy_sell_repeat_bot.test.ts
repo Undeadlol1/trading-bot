@@ -1,6 +1,6 @@
 import { BuySellRepeatBot } from '../../entities/BuySellRepeatBot';
 import { CryptoCurrencyTicker } from '../../entities/CryptoCurrencyTicker';
-import { runBuySellRepeatBot } from '../run_buy_sell_repeat_bot';
+import { BuySellRepeatBotRunner } from '../run_buy_sell_repeat_bot';
 
 // TODO create generator function?
 const bot: BuySellRepeatBot = {
@@ -25,7 +25,7 @@ describe('BUY_SELL_REPEAT runner', () => {
   it('does nothing if bot is paused', async () => {
     bot.isActive = false;
     const buyFunction = jest.fn(Promise.resolve);
-    await runBuySellRepeatBot({
+    await BuySellRepeatBotRunner.run({
       bot,
       ticker,
       dependencies: { updateBot: async () => ({} as BuySellRepeatBot) },
@@ -41,7 +41,7 @@ describe('BUY_SELL_REPEAT runner', () => {
     const botUpdateFunction = jest.fn(() =>
       Promise.resolve({} as BuySellRepeatBot)
     );
-    await runBuySellRepeatBot({
+    await BuySellRepeatBotRunner.run({
       bot,
       ticker,
       dependencies: { updateBot: botUpdateFunction },
