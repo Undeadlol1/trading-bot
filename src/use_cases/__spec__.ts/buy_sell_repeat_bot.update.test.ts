@@ -2,7 +2,7 @@ import {
   BuySellRepeatBot,
   BuySellRepeatBotPayload,
 } from '../../entities/BuySellRepeatBot';
-import { buySellRepeatBot } from '../buy_sell_repeat_bot.create';
+import { updateBuySellRepeatBot } from '../buy_sell_repeat_bot.update';
 
 const updatePayload: BuySellRepeatBotPayload = {
   buyAt: 10,
@@ -17,8 +17,12 @@ describe('Update BUY_SELL_REPEAT Bot', () => {
     const createFunctionMock = jest.fn(() =>
       Promise.resolve({} as BuySellRepeatBot)
     );
-    await buySellRepeatBot(updatePayload, {
-      botRepo: { create: createFunctionMock },
+    await updateBuySellRepeatBot({
+      id: '123',
+      data: updatePayload,
+      dependencies: {
+        botRepo: { create: createFunctionMock, update: createFunctionMock },
+      },
     });
     expect(createFunctionMock.mock.calls.length === 1).toBeTruthy();
   });
@@ -27,8 +31,12 @@ describe('Update BUY_SELL_REPEAT Bot', () => {
     const createFunctionMock = jest.fn(() =>
       Promise.resolve(updatePayload as BuySellRepeatBot)
     );
-    const functionResult = await buySellRepeatBot(updatePayload, {
-      botRepo: { create: createFunctionMock },
+    const functionResult = await updateBuySellRepeatBot({
+      id: '123',
+      data: updatePayload,
+      dependencies: {
+        botRepo: { create: createFunctionMock, update: createFunctionMock },
+      },
     });
     expect(functionResult).toMatchObject(updatePayload);
   });
