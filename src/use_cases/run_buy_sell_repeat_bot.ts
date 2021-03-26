@@ -1,7 +1,7 @@
 import { CryptoCurrencyTicker } from '../entities/CryptoCurrencyTicker';
 import { BuySellRepeatBot } from '../entities/BuySellRepeatBot';
 
-export function runBuySellRepeatBot({
+export async function runBuySellRepeatBot({
   bot,
   ticker,
   dependencies,
@@ -13,10 +13,15 @@ export function runBuySellRepeatBot({
   if (!bot.isActive) {
     return Promise.resolve();
   }
-  ticker.close;
-  dependencies;
-  // console.log('bot: ', bot);
-  // console.log('ticker', ticker);
-  // console.log('dependencies', dependencies);
+
+  if (!bot.hasBought && ticker.close >= bot.buyAt) {
+    await dependencies.updateBot();
+    return dependencies.buyCrypto();
+  }
+
+  if (!bot.hasSold && ticker.close >= bot.sellAt) {
+    await dependencies.updateBot();
+    return dependencies.sellCrypto();
+  }
   return Promise.resolve();
 }
