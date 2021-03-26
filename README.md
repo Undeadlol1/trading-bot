@@ -20,7 +20,7 @@ This builds to `/dist` and runs the project in watch mode so any edits you save 
 
 To do a one-off build, use `npm run build` or `yarn build`.
 
-To run tests, use `npm test` or `yarn test`.
+To run tests, use `npm test` or `yarn test`. To run tests in watch mode, use `yarn test:watch`.
 
 ## Configuration
 
