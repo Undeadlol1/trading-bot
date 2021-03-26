@@ -1,42 +1,42 @@
 import { BuySellRepeatBot } from '../entities/BuySellRepeatBot';
 import { CryptoCurrencyTicker } from '../entities/CryptoCurrencyTicker';
-import { updateBuySellRepeatBotArguments } from './buy_sell_repeat_bot.update';
 
 export class BuySellRepeatBotRunner {
   static async run({
     bot,
     ticker,
-  }: // dependencies,
-  {
+    dependencies,
+  }: {
     bot: BuySellRepeatBot;
     ticker: CryptoCurrencyTicker;
     dependencies: {
-      updateBot: (
-        args: updateBuySellRepeatBotArguments
-      ) => Promise<BuySellRepeatBot>;
+      updateBot: (args: {
+        hasSold: boolean;
+        hasBought: boolean;
+      }) => Promise<BuySellRepeatBot>;
     };
   }): Promise<void> {
     if (!bot.isActive) {
-      return Promise.resolve();
+      return;
     }
 
-    if (!bot.hasBought && ticker.close >= bot.buyAt) {
-      // await dependencies.updateBot({
-      //   id: bot.id,
-      //   // data: {
-      //   //   hasBought: false,
-      //   //   hasSold: true,
-      //   // },
-      // });
+    if (!bot.hasBought && ticker.close <= bot.buyAt) {
+      await dependencies.updateBot({
+        hasSold: false,
+        hasBought: true,
+      });
       // return dependencies.buyCrypto();
       return;
     }
 
-    // if (!bot.hasSold && ticker.close >= bot.sellAt) {
-    //   await dependencies.updateBot();
-    //   // return dependencies.sellCrypto();
-    //   return;
-    // }
+    if (!bot.hasSold && ticker.close >= bot.sellAt) {
+      await dependencies.updateBot({
+        hasSold: true,
+        hasBought: false,
+      });
+      // return dependencies.sellCrypto();
+      return;
+    }
 
     return Promise.resolve();
   }
