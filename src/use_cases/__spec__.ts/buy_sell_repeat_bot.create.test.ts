@@ -2,7 +2,7 @@ import {
   BuySellRepeatBot,
   BuySellRepeatBotPayload,
 } from '../../entities/BuySellRepeatBot';
-import { buySellRepeatBot } from '../buy_sell_repeat.bot.create';
+import { buySellRepeatBot } from '../buy_sell_repeat_bot.create';
 
 const createPayload: BuySellRepeatBotPayload = {
   buyAt: 10,

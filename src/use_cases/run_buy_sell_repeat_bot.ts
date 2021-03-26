@@ -23,5 +23,6 @@ export async function runBuySellRepeatBot({
     await dependencies.updateBot();
     return dependencies.sellCrypto();
   }
+
   return Promise.resolve();
 }
