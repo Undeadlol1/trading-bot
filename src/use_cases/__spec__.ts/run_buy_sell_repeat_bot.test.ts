@@ -1,9 +1,6 @@
-import { runBuySellRepeatBot } from '../run_buy_sell_repeat_bot';
 import { BuySellRepeatBot } from '../../entities/BuySellRepeatBot';
 import { CryptoCurrencyTicker } from '../../entities/CryptoCurrencyTicker';
-import { BuySellRepeatBotRepo } from '../../repositories/buy_sell_repeat_bot.repository';
-
-const botRepo = new BuySellRepeatBotRepo();
+import { runBuySellRepeatBot } from '../run_buy_sell_repeat_bot';
 
 // TODO create generator function?
 const bot: BuySellRepeatBot = {
@@ -31,7 +28,7 @@ describe('BUY_SELL_REPEAT runner', () => {
     await runBuySellRepeatBot({
       bot,
       ticker,
-      dependencies: { botRepo },
+      dependencies: { updateBot: async () => ({} as BuySellRepeatBot) },
     });
     expect(buyFunction.mock.calls.length).toStrictEqual(0);
   });
@@ -40,14 +37,24 @@ describe('BUY_SELL_REPEAT runner', () => {
     bot.buyAt = 100;
     bot.sellAt = 100;
     ticker.close = 99;
-    const buyFunction = jest.fn(Promise.resolve);
-    const botUpdateFunction = jest.fn(Promise.resolve);
+    // const buyFunction = jest.fn(Promise.resolve);
+    const botUpdateFunction = jest.fn(() =>
+      Promise.resolve({} as BuySellRepeatBot)
+    );
     await runBuySellRepeatBot({
       bot,
       ticker,
-      dependencies: { buyFunctionMock: buyFunction, botUpdateFunction },
+      dependencies: { updateBot: botUpdateFunction },
     });
     // expect(buyFunction.mock.calls.length === 1).toBeTruthy();
-    // expect(botUpdateFunction.mock.calls.length === 1).toBeTruthy();
+    expect(botUpdateFunction.mock.calls.length === 1).toBeTruthy();
+    console.log(
+      'botUpdateFunction.mock.calls[0]: ',
+      botUpdateFunction.mock.calls[0]
+    );
+    expect(botUpdateFunction.mock.calls[0]).toEqual({
+      hasBought: true,
+      hasSold: false,
+    });
   });
 });

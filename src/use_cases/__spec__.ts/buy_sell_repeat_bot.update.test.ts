@@ -1,10 +1,10 @@
 import {
   BuySellRepeatBot,
-  BuySellRepeatBotPayload,
+  BuySellRepeatBotCreatePayload,
 } from '../../entities/BuySellRepeatBot';
 import { updateBuySellRepeatBot } from '../buy_sell_repeat_bot.update';
 
-const updatePayload: BuySellRepeatBotPayload = {
+const updatePayload: BuySellRepeatBotCreatePayload = {
   buyAt: 10,
   sellAt: 11,
   isActive: true,

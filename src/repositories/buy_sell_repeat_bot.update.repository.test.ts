@@ -1,20 +1,20 @@
 import { prisma } from '../dbs/prisma/PrismaClientSignleton';
 import {
   BuySellRepeatBot,
-  BuySellRepeatBotPayload,
+  BuySellRepeatBotCreatePayload,
 } from '../entities/BuySellRepeatBot';
 import { BuySellRepeatBotRepo } from './buy_sell_repeat_bot.repository';
 
 let existingBot: BuySellRepeatBot;
 const repo = new BuySellRepeatBotRepo();
-const createPayload: BuySellRepeatBotPayload = {
+const createPayload: BuySellRepeatBotCreatePayload = {
   buyAt: 10,
   sellAt: 11,
   isActive: true,
   symbolToBuy: 'BTC',
   symbolToBuyFor: 'USDT',
 };
-const updatePayload: BuySellRepeatBotPayload = {
+const updatePayload: BuySellRepeatBotCreatePayload = {
   buyAt: 12,
   sellAt: 14,
   isActive: false,
