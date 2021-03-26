@@ -1,10 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../dbs/prisma/PrismaClientSignleton';
 import {
   BuySellRepeatBotPayload,
   BuySellRepeatBot,
 } from '../entities/BuySellRepeatBot';
-
-const prisma = new PrismaClient();
 
 export class BuySellRepeatBotRepo {
   async create(data: BuySellRepeatBotPayload): Promise<BuySellRepeatBot> {

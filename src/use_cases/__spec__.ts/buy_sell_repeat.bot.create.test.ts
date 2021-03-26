@@ -4,7 +4,7 @@ import {
 } from '../../entities/BuySellRepeatBot';
 import { buySellRepeatBot } from '../buy_sell_repeat.bot.create';
 import { BuySellRepeatBotRepo } from '../../repositories/buy_sell_repeat_bot.repository';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../../dbs/prisma/PrismaClientSignleton';
 
 const typicalPayload: BuySellRepeatBotPayload = {
   buyAt: 10,
@@ -15,10 +15,7 @@ const typicalPayload: BuySellRepeatBotPayload = {
 };
 
 describe('Create BUY_SELL_REPEAT Bot', () => {
-  afterAll(async function() {
-    const prisma = new PrismaClient();
-    return prisma.buySellRepeatBot.deleteMany();
-  });
+  afterAll(() => prisma.buySellRepeatBot.deleteMany());
 
   it('calls bot repository', async () => {
     const createFunctionMock = jest.fn(() =>
