@@ -10,6 +10,8 @@ export class BuySellRepeatBotRunner {
     bot: BuySellRepeatBot;
     ticker: CryptoCurrencyTicker;
     dependencies: {
+      buy: () => Promise<void>;
+      sell: () => Promise<void>;
       updateBot: (args: {
         hasSold: boolean;
         hasBought: boolean;
@@ -25,8 +27,7 @@ export class BuySellRepeatBotRunner {
         hasSold: false,
         hasBought: true,
       });
-      // return dependencies.buyCrypto();
-      return;
+      return dependencies.buy();
     }
 
     if (!bot.hasSold && ticker.close >= bot.sellAt) {
@@ -34,10 +35,7 @@ export class BuySellRepeatBotRunner {
         hasSold: true,
         hasBought: false,
       });
-      // return dependencies.sellCrypto();
-      return;
+      return dependencies.sell();
     }
-
-    return Promise.resolve();
   }
 }

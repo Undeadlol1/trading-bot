@@ -1,6 +1,6 @@
 import { BuySellRepeatBot } from '../../entities/BuySellRepeatBot';
-import { CryptoCurrencyTicker } from '../../entities/CryptoCurrencyTicker';
 import { BuySellRepeatBotRunner } from '../run_buy_sell_repeat_bot';
+import { CryptoCurrencyTicker } from '../../entities/CryptoCurrencyTicker';
 
 const ticker: CryptoCurrencyTicker = {
   close: 100,
@@ -8,46 +8,79 @@ const ticker: CryptoCurrencyTicker = {
 };
 
 describe('BUY_SELL_REPEAT runner', () => {
-  it('updates bot properties after buy', async () => {
+  it('calls sell function', async () => {
     const bot = generateBot();
+    const dependencies = generateDependencies();
     bot.buyAt = 100;
     bot.sellAt = 110;
-    ticker.close = 99;
-    const botUpdateFunction = jest.fn(() =>
-      Promise.resolve({} as BuySellRepeatBot)
-    );
+    bot.hasSold = false;
+    bot.hasBought = true;
+    ticker.close = 115;
 
     await BuySellRepeatBotRunner.run({
       bot,
       ticker,
-      dependencies: { updateBot: botUpdateFunction },
+      dependencies,
     });
 
-    expect(botUpdateFunction.mock.calls.length === 1).toBeTruthy();
-    expect((botUpdateFunction.mock.calls[0] as any)[0]).toEqual({
+    expect(dependencies.sell).toHaveBeenCalled();
+    expect(dependencies.buy).not.toHaveBeenCalled();
+  });
+
+  it('calls buy function', async () => {
+    const bot = generateBot();
+    const dependencies = generateDependencies();
+    bot.buyAt = 100;
+    bot.sellAt = 110;
+    bot.hasSold = false;
+    bot.hasBought = false;
+    ticker.close = 90;
+
+    await BuySellRepeatBotRunner.run({
+      bot,
+      ticker,
+      dependencies,
+    });
+
+    expect(dependencies.buy).toHaveBeenCalled();
+    expect(dependencies.sell).not.toHaveBeenCalled();
+  });
+
+  it('updates bot after buy', async () => {
+    const dependencies = generateDependencies();
+    const bot = generateBot();
+    bot.buyAt = 100;
+    bot.sellAt = 110;
+    ticker.close = 99;
+
+    await BuySellRepeatBotRunner.run({
+      bot,
+      ticker,
+      dependencies,
+    });
+
+    expect(dependencies.updateBot).toHaveBeenCalledWith({
       hasSold: false,
       hasBought: true,
     });
   });
 
-  it('updates bot properties after sell', async () => {
+  it('updates bot after sell', async () => {
     const bot = generateBot();
+    const dependencies = generateDependencies();
     bot.buyAt = 100;
     bot.sellAt = 110;
     ticker.close = 115;
     bot.hasBought = true;
-    const botUpdateFunction = jest.fn(() =>
-      Promise.resolve({} as BuySellRepeatBot)
-    );
 
     await BuySellRepeatBotRunner.run({
       bot,
       ticker,
-      dependencies: { updateBot: botUpdateFunction },
+      dependencies,
     });
 
-    expect(botUpdateFunction.mock.calls.length === 1).toBeTruthy();
-    expect((botUpdateFunction.mock.calls[0] as any)[0]).toEqual({
+    expect(dependencies.updateBot).toBeCalledTimes(1);
+    expect(dependencies.updateBot).toBeCalledWith({
       hasSold: true,
       hasBought: false,
     });
@@ -55,14 +88,18 @@ describe('BUY_SELL_REPEAT runner', () => {
 
   it('does nothing if bot is paused', async () => {
     const bot = generateBot();
+    const dependencies = generateDependencies();
     bot.isActive = false;
-    const buyFunction = jest.fn(Promise.resolve);
+
     await BuySellRepeatBotRunner.run({
       bot,
       ticker,
-      dependencies: { updateBot: async () => ({} as BuySellRepeatBot) },
+      dependencies,
     });
-    expect(buyFunction.mock.calls.length).toStrictEqual(0);
+
+    expect(dependencies.buy).not.toHaveBeenCalled();
+    expect(dependencies.sell).not.toHaveBeenCalled();
+    expect(dependencies.updateBot).not.toHaveBeenCalled();
   });
 });
 
@@ -78,5 +115,13 @@ function generateBot(): BuySellRepeatBot {
     symbolToBuyFor: 'USDT',
     createdAt: new Date(),
     updatedAt: new Date(),
+  };
+}
+
+function generateDependencies() {
+  return {
+    buy: jest.fn(() => Promise.resolve()),
+    sell: jest.fn(() => Promise.resolve()),
+    updateBot: jest.fn(() => Promise.resolve({} as BuySellRepeatBot)),
   };
 }
