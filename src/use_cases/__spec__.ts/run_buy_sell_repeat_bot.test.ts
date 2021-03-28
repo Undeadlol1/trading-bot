@@ -1,5 +1,5 @@
 import { BuySellRepeatBot } from '../../entities/BuySellRepeatBot';
-import { BuySellRepeatBotRunner } from '../run_buy_sell_repeat_bot';
+import { BuySellRepeatBotRunner } from '../buy_sell_repeat_bot.runner';
 import { CryptoCurrencyTicker } from '../../entities/CryptoCurrencyTicker';
 
 const ticker: CryptoCurrencyTicker = {

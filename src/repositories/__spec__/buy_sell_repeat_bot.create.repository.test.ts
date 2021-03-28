@@ -1,6 +1,6 @@
-import { prisma } from '../dbs/prisma/PrismaClientSignleton';
-import { BuySellRepeatBotCreatePayload } from '../entities/BuySellRepeatBot';
-import { BuySellRepeatBotRepo } from './buy_sell_repeat_bot.repository';
+import { prisma } from '../../dbs/prisma/PrismaClientSignleton';
+import { BuySellRepeatBotCreatePayload } from '../../entities/BuySellRepeatBot';
+import { BuySellRepeatBotRepo } from '../buy_sell_repeat_bot.repository';
 
 const repo = new BuySellRepeatBotRepo();
 const createPayload: BuySellRepeatBotCreatePayload = {
