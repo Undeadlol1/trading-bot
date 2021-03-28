@@ -53,6 +53,7 @@ describe('BUY_SELL_REPEAT runner', () => {
     const dependencies = getDependencies();
     bot.buyAt = 100;
     bot.sellAt = 110;
+    bot.amountToBuy = 2;
     bot.initialBalance = 1000;
     bot.currentBalance = 1000;
     ticker.close = 100;
@@ -75,8 +76,10 @@ describe('BUY_SELL_REPEAT runner', () => {
     const dependencies = getDependencies();
     bot.buyAt = 100;
     bot.sellAt = 110;
-    ticker.close = 115;
+    bot.amountToBuy = 2;
+    bot.initialBalance = 1000;
     bot.hasBought = true;
+    ticker.close = 115;
 
     const runner = new BuySellRepeatBotRunner({
       bot,
@@ -89,7 +92,7 @@ describe('BUY_SELL_REPEAT runner', () => {
     expect(dependencies.updateBot).toBeCalledWith({
       hasSold: true,
       hasBought: false,
-      currentBalance: 1010,
+      currentBalance: 1020,
     });
   });
 
@@ -118,7 +121,7 @@ function getBot(): BuySellRepeatBot {
     sellAt: 110,
     isActive: true,
     hasSold: false,
-    amountToBuy: 10,
+    amountToBuy: 2,
     hasBought: false,
     symbolToBuy: 'BTC',
     currentBalance: 1000,

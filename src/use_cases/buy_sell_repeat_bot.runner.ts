@@ -45,9 +45,11 @@ export class BuySellRepeatBotRunner {
       hasSold: true,
       hasBought: false,
       currentBalance:
-      // TODO: fix this calculation.
-      // NOTE: currently price difference is calculated. But 
-        this.bot.initialBalance + (this.bot.sellAt - this.bot.buyAt),
+        // NOTE: I am not sure about this calculation.
+        // NOTE: Will this break with alot of floating point numbers?
+        // NOTE: JS is terrible at handling math.
+        this.bot.initialBalance +
+        (this.bot.sellAt - this.bot.buyAt) * this.bot.amountToBuy,
     });
     return this.dependencies.sell();
   }
