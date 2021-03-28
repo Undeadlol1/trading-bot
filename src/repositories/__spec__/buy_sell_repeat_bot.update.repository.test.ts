@@ -12,14 +12,20 @@ const createPayload: BuySellRepeatBotCreatePayload = {
   sellAt: 11,
   isActive: true,
   symbolToBuy: 'BTC',
+  currentBalance: 1000,
+  initialBalance: 1000,
   symbolToBuyFor: 'USDT',
+  isPaperTradingEnabled: false,
 };
 const updatePayload: BuySellRepeatBotCreatePayload = {
   buyAt: 12,
   sellAt: 14,
   isActive: false,
   symbolToBuy: 'BTC',
+  currentBalance: 1000,
+  initialBalance: 1000,
   symbolToBuyFor: 'USDT',
+  isPaperTradingEnabled: false,
 };
 
 describe('Update BUY_SELL_REPEAT_BOT Repo', () => {

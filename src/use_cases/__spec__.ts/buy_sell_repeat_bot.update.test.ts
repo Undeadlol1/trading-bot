@@ -1,13 +1,12 @@
-import {
-  BuySellRepeatBot,
-  BuySellRepeatBotCreatePayload,
-} from '../../entities/BuySellRepeatBot';
+import { BuySellRepeatBot } from '../../entities/BuySellRepeatBot';
 import { updateBuySellRepeatBot } from '../buy_sell_repeat_bot.update';
+import { BuySellRepeatBotUpdatePayload } from '../../entities/BuySellRepeatBot';
 
-const updatePayload: BuySellRepeatBotCreatePayload = {
+const updatePayload: BuySellRepeatBotUpdatePayload = {
   buyAt: 10,
   sellAt: 11,
   isActive: true,
+  initialBalance: 100,
   symbolToBuy: 'BTC',
   symbolToBuyFor: 'USDT',
 };

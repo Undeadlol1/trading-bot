@@ -8,6 +8,9 @@ export interface BuySellRepeatBotCreatePayload {
   isActive: boolean;
   symbolToBuy: string;
   symbolToBuyFor: string;
+  initialBalance: number;
+  currentBalance: number;
+  isPaperTradingEnabled: boolean;
 }
 
 export interface BuySellRepeatBotUpdatePayload {
@@ -18,6 +21,8 @@ export interface BuySellRepeatBotUpdatePayload {
   hasBought?: boolean;
   symbolToBuy?: string;
   symbolToBuyFor?: string;
+  currentBalance?: number;
+  isPaperTradingEnabled?: boolean;
 }
 
 export interface BuySellRepeatBot

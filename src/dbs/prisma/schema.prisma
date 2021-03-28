@@ -11,13 +11,16 @@ generator client {
 }
 
 model BuySellRepeatBot {
-  buyAt          Float
-  sellAt         Float
-  symbolToBuy    String
-  symbolToBuyFor String
-  hasBought      Boolean @default(false)
-  hasSold        Boolean @default(false)
-  isActive       Boolean @default(false)
+  buyAt                 Float
+  sellAt                Float
+  initialBalance        Float
+  currentBalance        Float
+  symbolToBuy           String
+  symbolToBuyFor        String
+  hasBought             Boolean @default(false)
+  hasSold               Boolean @default(false)
+  isActive              Boolean @default(false)
+  isPaperTradingEnabled Boolean @default(false)
 
   results BuySellRepeatBotRunResult[]
 

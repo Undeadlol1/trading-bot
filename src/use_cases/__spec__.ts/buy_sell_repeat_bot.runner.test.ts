@@ -117,9 +117,12 @@ function getBot(): BuySellRepeatBot {
     hasSold: false,
     hasBought: false,
     symbolToBuy: 'BTC',
-    symbolToBuyFor: 'USDT',
+    currentBalance: 1000,
+    initialBalance: 1000,
     createdAt: new Date(),
     updatedAt: new Date(),
+    symbolToBuyFor: 'USDT',
+    isPaperTradingEnabled: false,
   };
 }
 
