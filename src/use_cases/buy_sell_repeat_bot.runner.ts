@@ -11,22 +11,18 @@ interface Dependencies {
 }
 
 export class BuySellRepeatBotRunner {
-  bot: BuySellRepeatBot;
-  ticker: CryptoCurrencyTicker;
-  dependencies: Dependencies;
+  private bot: BuySellRepeatBot;
+  private dependencies: Dependencies;
+  private ticker: CryptoCurrencyTicker;
 
-  constructor({
-    bot,
-    ticker,
-    dependencies,
-  }: {
+  constructor(args: {
     bot: BuySellRepeatBot;
-    ticker: CryptoCurrencyTicker;
     dependencies: Dependencies;
+    ticker: CryptoCurrencyTicker;
   }) {
-    this.bot = bot;
-    this.ticker = ticker;
-    this.dependencies = dependencies;
+    this.bot = args.bot;
+    this.ticker = args.ticker;
+    this.dependencies = args.dependencies;
   }
 
   async run(): Promise<void> {
