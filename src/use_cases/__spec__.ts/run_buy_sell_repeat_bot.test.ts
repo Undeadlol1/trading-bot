@@ -9,8 +9,8 @@ const ticker: CryptoCurrencyTicker = {
 
 describe('BUY_SELL_REPEAT runner', () => {
   it('calls sell function', async () => {
-    const bot = generateBot();
-    const dependencies = generateDependencies();
+    const bot = getBot();
+    const dependencies = getDependencies();
     bot.buyAt = 100;
     bot.sellAt = 110;
     bot.hasSold = false;
@@ -28,8 +28,8 @@ describe('BUY_SELL_REPEAT runner', () => {
   });
 
   it('calls buy function', async () => {
-    const bot = generateBot();
-    const dependencies = generateDependencies();
+    const bot = getBot();
+    const dependencies = getDependencies();
     bot.buyAt = 100;
     bot.sellAt = 110;
     bot.hasSold = false;
@@ -47,8 +47,8 @@ describe('BUY_SELL_REPEAT runner', () => {
   });
 
   it('updates bot after buy', async () => {
-    const dependencies = generateDependencies();
-    const bot = generateBot();
+    const bot = getBot();
+    const dependencies = getDependencies();
     bot.buyAt = 100;
     bot.sellAt = 110;
     ticker.close = 99;
@@ -66,8 +66,8 @@ describe('BUY_SELL_REPEAT runner', () => {
   });
 
   it('updates bot after sell', async () => {
-    const bot = generateBot();
-    const dependencies = generateDependencies();
+    const bot = getBot();
+    const dependencies = getDependencies();
     bot.buyAt = 100;
     bot.sellAt = 110;
     ticker.close = 115;
@@ -87,8 +87,8 @@ describe('BUY_SELL_REPEAT runner', () => {
   });
 
   it('does nothing if bot is paused', async () => {
-    const bot = generateBot();
-    const dependencies = generateDependencies();
+    const bot = getBot();
+    const dependencies = getDependencies();
     bot.isActive = false;
 
     await BuySellRepeatBotRunner.run({
@@ -103,7 +103,7 @@ describe('BUY_SELL_REPEAT runner', () => {
   });
 });
 
-function generateBot(): BuySellRepeatBot {
+function getBot(): BuySellRepeatBot {
   return {
     id: '123',
     buyAt: 100,
@@ -118,7 +118,7 @@ function generateBot(): BuySellRepeatBot {
   };
 }
 
-function generateDependencies() {
+function getDependencies() {
   return {
     buy: jest.fn(() => Promise.resolve()),
     sell: jest.fn(() => Promise.resolve()),
