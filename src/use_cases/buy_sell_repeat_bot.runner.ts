@@ -30,25 +30,40 @@ export class BuySellRepeatBotRunner {
   }
 
   async run(): Promise<void> {
-    const { bot, ticker, dependencies } = this;
-    if (!bot.isActive) {
+    if (!this.bot.isActive) {
       return;
     }
 
-    if (!bot.hasBought && ticker.close <= bot.buyAt) {
-      await this.dependencies.updateBot({
-        hasSold: false,
-        hasBought: true,
-      });
-      return this.dependencies.buy();
+    if (this.shouldBuy()) {
+      return this.buyAndUpdateBot();
     }
 
-    if (!bot.hasSold && ticker.close >= bot.sellAt) {
-      await dependencies.updateBot({
-        hasSold: true,
-        hasBought: false,
-      });
-      return dependencies.sell();
+    if (this.shouldSell()) {
+      return this.sellAndUpdateBot();
     }
+  }
+
+  private async sellAndUpdateBot() {
+    await this.dependencies.updateBot({
+      hasSold: true,
+      hasBought: false,
+    });
+    return this.dependencies.sell();
+  }
+
+  private async buyAndUpdateBot() {
+    await this.dependencies.updateBot({
+      hasSold: false,
+      hasBought: true,
+    });
+    return this.dependencies.buy();
+  }
+
+  private shouldSell() {
+    return !this.bot.hasSold && this.ticker.close >= this.bot.sellAt;
+  }
+
+  private shouldBuy() {
+    return !this.bot.hasBought && this.ticker.close <= this.bot.buyAt;
   }
 }
