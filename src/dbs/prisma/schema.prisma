@@ -15,6 +15,7 @@ model BuySellRepeatBot {
   sellAt                Float
   initialBalance        Float
   currentBalance        Float
+  amountToBuy           Float
   symbolToBuy           String
   symbolToBuyFor        String
   hasBought             Boolean @default(false)

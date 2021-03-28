@@ -6,6 +6,7 @@ export interface BuySellRepeatBotCreatePayload {
   buyAt: number;
   sellAt: number;
   isActive: boolean;
+  amountToBuy: number;
   symbolToBuy: string;
   symbolToBuyFor: string;
   initialBalance: number;

@@ -11,6 +11,7 @@ const createPayload: BuySellRepeatBotCreatePayload = {
   buyAt: 10,
   sellAt: 11,
   isActive: true,
+  amountToBuy: 10,
   symbolToBuy: 'BTC',
   currentBalance: 1000,
   initialBalance: 1000,
@@ -20,6 +21,7 @@ const createPayload: BuySellRepeatBotCreatePayload = {
 const updatePayload: BuySellRepeatBotCreatePayload = {
   buyAt: 12,
   sellAt: 14,
+  amountToBuy: 10,
   isActive: false,
   symbolToBuy: 'BTC',
   currentBalance: 1000,

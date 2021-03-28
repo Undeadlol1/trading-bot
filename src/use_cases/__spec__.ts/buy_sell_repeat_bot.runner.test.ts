@@ -118,6 +118,7 @@ function getBot(): BuySellRepeatBot {
     sellAt: 110,
     isActive: true,
     hasSold: false,
+    amountToBuy: 10,
     hasBought: false,
     symbolToBuy: 'BTC',
     currentBalance: 1000,
