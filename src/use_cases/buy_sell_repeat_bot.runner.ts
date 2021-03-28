@@ -7,6 +7,7 @@ interface Dependencies {
   updateBot: (args: {
     hasSold: boolean;
     hasBought: boolean;
+    currentBalance?: number;
   }) => Promise<BuySellRepeatBot>;
 }
 
@@ -43,6 +44,10 @@ export class BuySellRepeatBotRunner {
     await this.dependencies.updateBot({
       hasSold: true,
       hasBought: false,
+      currentBalance:
+      // TODO: fix this calculation.
+      // NOTE: currently price difference is calculated. But 
+        this.bot.initialBalance + (this.bot.sellAt - this.bot.buyAt),
     });
     return this.dependencies.sell();
   }

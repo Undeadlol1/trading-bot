@@ -6,7 +6,6 @@ const updatePayload: BuySellRepeatBotUpdatePayload = {
   buyAt: 10,
   sellAt: 11,
   isActive: true,
-  initialBalance: 100,
   symbolToBuy: 'BTC',
   symbolToBuyFor: 'USDT',
 };
