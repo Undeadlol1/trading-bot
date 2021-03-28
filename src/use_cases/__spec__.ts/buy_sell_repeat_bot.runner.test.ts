@@ -17,11 +17,12 @@ describe('BUY_SELL_REPEAT runner', () => {
     bot.hasBought = true;
     ticker.close = 115;
 
-    await BuySellRepeatBotRunner.run({
+    const runner = new BuySellRepeatBotRunner({
       bot,
       ticker,
       dependencies,
     });
+    await runner.run();
 
     expect(dependencies.sell).toHaveBeenCalled();
     expect(dependencies.buy).not.toHaveBeenCalled();
@@ -36,11 +37,12 @@ describe('BUY_SELL_REPEAT runner', () => {
     bot.hasBought = false;
     ticker.close = 90;
 
-    await BuySellRepeatBotRunner.run({
+    const runner = new BuySellRepeatBotRunner({
       bot,
       ticker,
       dependencies,
     });
+    await runner.run();
 
     expect(dependencies.buy).toHaveBeenCalled();
     expect(dependencies.sell).not.toHaveBeenCalled();
@@ -53,11 +55,12 @@ describe('BUY_SELL_REPEAT runner', () => {
     bot.sellAt = 110;
     ticker.close = 99;
 
-    await BuySellRepeatBotRunner.run({
+    const runner = new BuySellRepeatBotRunner({
       bot,
       ticker,
       dependencies,
     });
+    await runner.run();
 
     expect(dependencies.updateBot).toHaveBeenCalledWith({
       hasSold: false,
@@ -73,11 +76,12 @@ describe('BUY_SELL_REPEAT runner', () => {
     ticker.close = 115;
     bot.hasBought = true;
 
-    await BuySellRepeatBotRunner.run({
+    const runner = new BuySellRepeatBotRunner({
       bot,
       ticker,
       dependencies,
     });
+    await runner.run();
 
     expect(dependencies.updateBot).toBeCalledTimes(1);
     expect(dependencies.updateBot).toBeCalledWith({
@@ -91,11 +95,12 @@ describe('BUY_SELL_REPEAT runner', () => {
     const dependencies = getDependencies();
     bot.isActive = false;
 
-    await BuySellRepeatBotRunner.run({
+    const runner = new BuySellRepeatBotRunner({
       bot,
       ticker,
       dependencies,
     });
+    await runner.run();
 
     expect(dependencies.buy).not.toHaveBeenCalled();
     expect(dependencies.sell).not.toHaveBeenCalled();
