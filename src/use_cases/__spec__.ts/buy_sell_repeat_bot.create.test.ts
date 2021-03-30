@@ -8,8 +8,12 @@ const createPayload: BuySellRepeatBotCreatePayload = {
   buyAt: 10,
   sellAt: 11,
   isActive: true,
+  amountToBuy: 10,
   symbolToBuy: 'BTC',
+  initialBalance: 1000,
+  currentBalance: 1000,
   symbolToBuyFor: 'USDT',
+  isPaperTradingEnabled: true,
 };
 
 describe('Create BUY_SELL_REPEAT Bot', () => {
