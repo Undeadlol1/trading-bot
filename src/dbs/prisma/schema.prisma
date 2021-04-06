@@ -23,7 +23,7 @@ model BuySellRepeatBot {
   isActive              Boolean @default(false)
   isPaperTradingEnabled Boolean @default(false)
 
-  limitOrders LimitOrder[]
+  limitOrders Order[]
   results     BuySellRepeatBotRunResult[]
 
   id        String   @id @default(uuid())
@@ -43,11 +43,13 @@ model BuySellRepeatBotRunResult {
   updatedAt DateTime @updatedAt
 }
 
-model LimitOrder {
+model Order {
   price    Float
   amount   Float
   symbol   String
-  isFilled Boolean @default(false)
+  type     OrderType
+  side     OrderSide
+  isFilled Boolean   @default(false)
 
   botId String           @unique
   bot   BuySellRepeatBot @relation(fields: [botId], references: [id])
@@ -55,4 +57,15 @@ model LimitOrder {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  @@map("LimitOrder")
+}
+
+enum OrderType {
+  LIMIT
+  MARKET
+}
+
+enum OrderSide {
+  BUY
+  SELL
 }

@@ -1,8 +1,16 @@
+-- CreateEnum
+CREATE TYPE "OrderType" AS ENUM ('LIMIT', 'MARKET');
+
+-- CreateEnum
+CREATE TYPE "OrderSide" AS ENUM ('BUY', 'SELL');
+
 -- CreateTable
 CREATE TABLE "LimitOrder" (
     "price" DOUBLE PRECISION NOT NULL,
     "amount" DOUBLE PRECISION NOT NULL,
     "symbol" TEXT NOT NULL,
+    "side" "OrderSide" NOT NULL,
+    "type" "OrderType" NOT NULL,
     "isFilled" BOOLEAN NOT NULL DEFAULT false,
     "botId" TEXT NOT NULL,
     "id" TEXT NOT NULL,
