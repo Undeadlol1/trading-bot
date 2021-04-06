@@ -1,23 +1,22 @@
 import { UsualDatabaseFields } from './UsualDatabaseFields';
 import { BuySellRepeatBot } from './BuySellRepeatBot';
 
-export interface LimitOrderCreatePayload {
+export interface OrderCreatePayload {
   price: number;
   amount: number;
   symbol: string;
   isFilled?: boolean;
   side: 'SELL' | 'BUY';
+  bot: BuySellRepeatBot;
   type: 'LIMIT' | 'MARKET';
 }
 
-export interface LimitOrderUpdatePayload {
+export interface OrderUpdatePayload {
   isFilled?: boolean;
 }
 
-export interface LimitOrder
-  extends LimitOrderCreatePayload,
-    UsualDatabaseFields {
+export interface Order extends OrderCreatePayload, UsualDatabaseFields {
   botId: string;
   isFilled: boolean;
-  bot?: BuySellRepeatBot;
+  bot: BuySellRepeatBot;
 }
