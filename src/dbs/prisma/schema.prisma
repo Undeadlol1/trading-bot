@@ -35,7 +35,7 @@ model BuySellRepeatBotRunResult {
   initialBalance Float
   currentBalance Float
 
-  botId String           @unique
+  botId String
   bot   BuySellRepeatBot @relation(fields: [botId], references: [id])
 
   id        String   @id @default(uuid())
@@ -51,7 +51,7 @@ model Order {
   side     OrderSide
   isFilled Boolean   @default(false)
 
-  botId String           @unique
+  botId String
   bot   BuySellRepeatBot @relation(fields: [botId], references: [id])
 
   id        String   @id @default(uuid())

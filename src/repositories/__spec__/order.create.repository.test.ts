@@ -1,20 +1,55 @@
 import { prisma } from '../../dbs/prisma/PrismaClientSignleton';
-import { BuySellRepeatBot } from '../../entities/BuySellRepeatBot';
+import { BuySellRepeatBotCreatePayload } from '../../entities/BuySellRepeatBot';
 import { OrderCreatePayload } from '../../entities/Order';
+import { BuySellRepeatBotRepo } from '../buy_sell_repeat_bot.repository';
 import { OrderRepository } from '../order.create.repository';
 
 const repo = new OrderRepository();
+
 const createPayload: OrderCreatePayload = {
   price: 22,
+  botId: '',
   amount: 22,
   side: 'SELL',
   type: 'MARKET',
   symbol: 'BTCETH',
-  bot: {} as BuySellRepeatBot,
 };
 
 describe('Create BUY_SELL_REPEAT_BOT Repo', () => {
-  afterAll(() => prisma.order.deleteMany());
+  beforeAll(async () => {
+    // TODO: extract bot creating logic.
+    const botPayload: BuySellRepeatBotCreatePayload = {
+      buyAt: 10,
+      sellAt: 11,
+      isActive: true,
+      amountToBuy: 10,
+      symbolToBuy: 'BTC',
+      initialBalance: 1000,
+      currentBalance: 1000,
+      symbolToBuyFor: 'USDT',
+      isPaperTradingEnabled: true,
+    };
+    const botRepo = new BuySellRepeatBotRepo();
+    return botRepo
+      .create(botPayload)
+      .then(bot => (createPayload.botId = bot.id));
+  });
+
+  afterAll(() =>
+    Promise.all([
+      prisma.order.deleteMany(),
+      prisma.buySellRepeatBot.delete({ where: { id: createPayload.botId } }),
+    ])
+  );
+
+  it('actually inserts doc into DB', async () => {
+    const documentsBefore = await prisma.order.count();
+    expect(documentsBefore).toBeLessThanOrEqual(0);
+
+    await repo.create(createPayload).then();
+    const documentsAfter = await prisma.order.count();
+    expect(documentsAfter).toStrictEqual(1);
+  });
 
   it('returns limit order', async () => {
     const createdBot = await repo.create(createPayload);
@@ -30,7 +65,7 @@ describe('Create BUY_SELL_REPEAT_BOT Repo', () => {
 
   it('assignes values properly', async () => {
     const result = await repo.create(createPayload);
-    expect(result).toHaveProperty('type', createPayload.type);
-    expect(result).toHaveProperty('hasBought', createPayload.side);
+    expect(result).toHaveProperty('side', 'SELL');
+    expect(result).toHaveProperty('type', 'MARKET');
   });
 });

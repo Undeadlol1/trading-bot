@@ -4,11 +4,11 @@ import { BuySellRepeatBot } from './BuySellRepeatBot';
 export interface OrderCreatePayload {
   id?: string;
   price: number;
+  botId: string;
   amount: number;
   symbol: string;
   isFilled?: boolean;
   side: 'SELL' | 'BUY';
-  bot: BuySellRepeatBot;
   type: 'LIMIT' | 'MARKET';
 }
 
