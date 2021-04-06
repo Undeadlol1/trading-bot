@@ -3,6 +3,7 @@ import { Order, OrderCreatePayload } from '../entities/Order';
 
 export class OrderRepository {
   async create(data: OrderCreatePayload): Promise<Order> {
-    return prisma.order.create({ data });
+    const result = prisma.order.create({ data });
+    return result;
   }
 }
