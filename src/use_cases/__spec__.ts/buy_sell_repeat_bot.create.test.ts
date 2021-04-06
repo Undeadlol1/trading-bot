@@ -4,7 +4,7 @@ import {
 } from '../../entities/BuySellRepeatBot';
 import { createBuySellRepeatBot } from '../buy_sell_repeat_bot.create';
 
-const createPayload: BuySellRepeatBotCreatePayload = {
+const botToCreate: BuySellRepeatBotCreatePayload = {
   buyAt: 10,
   sellAt: 11,
   isActive: true,
@@ -18,22 +18,27 @@ const createPayload: BuySellRepeatBotCreatePayload = {
 
 describe('Create BUY_SELL_REPEAT Bot', () => {
   it('calls bot repository', async () => {
-    const createFunctionMock = jest.fn(() =>
+    const createFunction = jest.fn(() =>
       Promise.resolve({} as BuySellRepeatBot)
     );
-    await createBuySellRepeatBot(createPayload, {
-      botRepo: { create: createFunctionMock, update: createFunctionMock },
+
+    await createBuySellRepeatBot(botToCreate, {
+      botRepo: { create: createFunction, update: createFunction },
     });
-    expect(createFunctionMock.mock.calls.length === 1).toBeTruthy();
+
+    expect(createFunction).toBeCalled();
   });
 
-  it('returns result of bot creation repository', async () => {
-    const createFunctionMock = jest.fn(() =>
-      Promise.resolve(createPayload as BuySellRepeatBot)
+  it('returns result of bot creation repository', async (): Promise<void> => {
+    const di = {
+      botRepo: {
+        create: () => Promise.resolve(botToCreate as BuySellRepeatBot),
+        update: () => Promise.resolve(botToCreate as BuySellRepeatBot),
+      },
+    };
+
+    return createBuySellRepeatBot(botToCreate, di).then(result =>
+      expect(result).toMatchObject(botToCreate)
     );
-    const functionResult = await createBuySellRepeatBot(createPayload, {
-      botRepo: { create: createFunctionMock, update: createFunctionMock },
-    });
-    expect(functionResult).toMatchObject(createPayload);
   });
 });
