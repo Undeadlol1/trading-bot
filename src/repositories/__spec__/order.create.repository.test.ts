@@ -46,7 +46,7 @@ describe('Create BUY_SELL_REPEAT_BOT Repo', () => {
     const documentsBefore = await prisma.order.count();
     expect(documentsBefore).toBeLessThanOrEqual(0);
 
-    await repo.create(createPayload).then();
+    await repo.create(createPayload);
     const documentsAfter = await prisma.order.count();
     expect(documentsAfter).toStrictEqual(1);
   });
