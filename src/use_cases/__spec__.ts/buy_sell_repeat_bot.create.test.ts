@@ -20,25 +20,21 @@ const createFunction = jest.fn(() =>
   Promise.resolve(botToCreate as BuySellRepeatBot)
 );
 
+const di = {
+  botRepo: {
+    create: createFunction,
+    update: createFunction,
+  },
+};
+
 describe('Create BUY_SELL_REPEAT Bot', () => {
   it('calls bot repository', async () => {
-    await createBuySellRepeatBot(botToCreate, {
-      botRepo: { create: createFunction, update: createFunction },
-    });
-
+    await createBuySellRepeatBot(botToCreate, di);
     expect(createFunction).toBeCalled();
   });
 
   it('returns bot after creation', async (): Promise<void> => {
-    const di = {
-      botRepo: {
-        create: createFunction,
-        update: createFunction,
-      },
-    };
-
-    return createBuySellRepeatBot(botToCreate, di).then(result =>
-      expect(result).toMatchObject(botToCreate)
-    );
+    const result = await createBuySellRepeatBot(botToCreate, di);
+    expect(result).toMatchObject(botToCreate);
   });
 });
