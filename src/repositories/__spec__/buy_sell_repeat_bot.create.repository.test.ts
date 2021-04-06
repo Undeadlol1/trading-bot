@@ -24,11 +24,11 @@ describe('Create BUY_SELL_REPEAT_BOT Repo', () => {
   });
 
   it('should add default properties', async () => {
-    const result = await repo.create(createPayload);
-    expect(result).toHaveProperty('id');
-    expect(result).toHaveProperty('createdAt');
-    expect(result).toHaveProperty('updatedAt');
-    expect(result).toHaveProperty('hasSold', false);
-    expect(result).toHaveProperty('hasBought', false);
+    const createdBot = await repo.create(createPayload);
+    expect(createdBot).toHaveProperty('id');
+    expect(createdBot).toHaveProperty('createdAt');
+    expect(createdBot).toHaveProperty('updatedAt');
+    expect(createdBot).toHaveProperty('hasSold', false);
+    expect(createdBot).toHaveProperty('hasBought', false);
   });
 });

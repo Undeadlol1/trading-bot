@@ -6,6 +6,8 @@ export interface LimitOrderCreatePayload {
   amount: number;
   symbol: string;
   isFilled?: boolean;
+  side: 'SELL' | 'BUY';
+  type: 'LIMIT' | 'MARKET';
 }
 
 export interface LimitOrderUpdatePayload {
@@ -17,5 +19,5 @@ export interface LimitOrder
     UsualDatabaseFields {
   botId: string;
   isFilled: boolean;
-  bot: BuySellRepeatBot;
+  bot?: BuySellRepeatBot;
 }
