@@ -16,12 +16,12 @@ const botToCreate: BuySellRepeatBotCreatePayload = {
   isPaperTradingEnabled: true,
 };
 
+const createFunction = jest.fn(() =>
+  Promise.resolve(botToCreate as BuySellRepeatBot)
+);
+
 describe('Create BUY_SELL_REPEAT Bot', () => {
   it('calls bot repository', async () => {
-    const createFunction = jest.fn(() =>
-      Promise.resolve({} as BuySellRepeatBot)
-    );
-
     await createBuySellRepeatBot(botToCreate, {
       botRepo: { create: createFunction, update: createFunction },
     });
@@ -29,11 +29,11 @@ describe('Create BUY_SELL_REPEAT Bot', () => {
     expect(createFunction).toBeCalled();
   });
 
-  it('returns result of bot creation repository', async (): Promise<void> => {
+  it('returns bot after creation', async (): Promise<void> => {
     const di = {
       botRepo: {
-        create: () => Promise.resolve(botToCreate as BuySellRepeatBot),
-        update: () => Promise.resolve(botToCreate as BuySellRepeatBot),
+        create: createFunction,
+        update: createFunction,
       },
     };
 
