@@ -12,10 +12,6 @@ export interface OrderCreatePayload {
   type: 'LIMIT' | 'MARKET';
 }
 
-export interface OrderUpdatePayload {
-  isFilled?: boolean;
-}
-
 export interface Order extends UsualDatabaseFields {
   price: number;
   botId: string;
