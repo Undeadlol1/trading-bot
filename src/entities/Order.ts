@@ -1,10 +1,10 @@
-import { UsualDatabaseFields } from './UsualDatabaseFields';
 import { BuySellRepeatBot } from './BuySellRepeatBot';
+import { UsualDatabaseFields } from './UsualDatabaseFields';
 
 export interface OrderCreatePayload {
   id?: string;
-  price?: number;
   botId: string;
+  price?: number;
   amount: number;
   symbol: string;
   isFilled?: boolean;
@@ -13,8 +13,8 @@ export interface OrderCreatePayload {
 }
 
 export interface Order extends UsualDatabaseFields {
-  price?: number;
   botId: string;
+  price?: number;
   amount: number;
   symbol: string;
   isFilled: boolean;

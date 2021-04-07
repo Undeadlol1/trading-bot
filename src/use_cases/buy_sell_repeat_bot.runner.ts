@@ -1,6 +1,6 @@
+import { Order, OrderCreatePayload } from '../entities/Order';
 import { BuySellRepeatBot } from '../entities/BuySellRepeatBot';
 import { CryptoCurrencyTicker } from '../entities/CryptoCurrencyTicker';
-import { Order, OrderCreatePayload } from '../entities/Order';
 
 interface Dependencies {
   createOrder: (args: OrderCreatePayload) => Promise<Order>;
