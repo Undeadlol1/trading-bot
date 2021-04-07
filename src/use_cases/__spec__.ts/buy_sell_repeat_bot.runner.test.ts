@@ -1,6 +1,7 @@
 import { BuySellRepeatBot } from '../../entities/BuySellRepeatBot';
 import { BuySellRepeatBotRunner } from '../buy_sell_repeat_bot.runner';
 import { CryptoCurrencyTicker } from '../../entities/CryptoCurrencyTicker';
+import { Order } from '../../entities/Order';
 
 const ticker: CryptoCurrencyTicker = {
   close: 100,
@@ -24,8 +25,13 @@ describe('BUY_SELL_REPEAT runner', () => {
     });
     await runner.run();
 
-    expect(dependencies.sell).toHaveBeenCalled();
-    expect(dependencies.buy).not.toHaveBeenCalled();
+    expect(dependencies.createOrder).toBeCalledWith({
+      side: 'SELL',
+      botId: bot.id,
+      type: 'MARKET',
+      amount: bot.amountToBuy,
+      symbol: bot.symbolToBuy + bot.symbolToBuyFor,
+    });
   });
 
   it('calls buy function', async () => {
@@ -44,8 +50,13 @@ describe('BUY_SELL_REPEAT runner', () => {
     });
     await runner.run();
 
-    expect(dependencies.buy).toHaveBeenCalled();
-    expect(dependencies.sell).not.toHaveBeenCalled();
+    expect(dependencies.createOrder).toBeCalledWith({
+      side: 'BUY',
+      botId: bot.id,
+      type: 'MARKET',
+      amount: bot.amountToBuy,
+      symbol: bot.symbolToBuy + bot.symbolToBuyFor,
+    });
   });
 
   it('updates bot after buy', async () => {
@@ -108,8 +119,7 @@ describe('BUY_SELL_REPEAT runner', () => {
     });
     await runner.run();
 
-    expect(dependencies.buy).not.toHaveBeenCalled();
-    expect(dependencies.sell).not.toHaveBeenCalled();
+    expect(dependencies.createOrder).not.toHaveBeenCalled();
     expect(dependencies.updateBot).not.toHaveBeenCalled();
   });
 });
@@ -135,8 +145,7 @@ function getBot(): BuySellRepeatBot {
 
 function getDependencies() {
   return {
-    buy: jest.fn(() => Promise.resolve()),
-    sell: jest.fn(() => Promise.resolve()),
+    createOrder: jest.fn(() => Promise.resolve({} as Order)),
     updateBot: jest.fn(() => Promise.resolve({} as BuySellRepeatBot)),
   };
 }

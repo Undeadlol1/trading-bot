@@ -1,9 +1,9 @@
 import { BuySellRepeatBot } from '../entities/BuySellRepeatBot';
 import { CryptoCurrencyTicker } from '../entities/CryptoCurrencyTicker';
+import { Order, OrderCreatePayload } from '../entities/Order';
 
 interface Dependencies {
-  buy: () => Promise<void>;
-  sell: () => Promise<void>;
+  createOrder: (args: OrderCreatePayload) => Promise<Order>;
   updateBot: (args: {
     hasSold: boolean;
     hasBought: boolean;
@@ -41,6 +41,13 @@ export class BuySellRepeatBotRunner {
   }
 
   private async sellAndUpdateBot() {
+    await this.dependencies.createOrder({
+      side: 'SELL',
+      type: 'MARKET',
+      botId: this.bot.id,
+      amount: this.bot.amountToBuy,
+      symbol: this.bot.symbolToBuy + this.bot.symbolToBuyFor,
+    });
     await this.dependencies.updateBot({
       hasSold: true,
       hasBought: false,
@@ -51,15 +58,20 @@ export class BuySellRepeatBotRunner {
         this.bot.initialBalance +
         (this.bot.sellAt - this.bot.buyAt) * this.bot.amountToBuy,
     });
-    return this.dependencies.sell();
   }
 
   private async buyAndUpdateBot() {
+    await this.dependencies.createOrder({
+      side: 'BUY',
+      type: 'MARKET',
+      botId: this.bot.id,
+      amount: this.bot.amountToBuy,
+      symbol: this.bot.symbolToBuy + this.bot.symbolToBuyFor,
+    });
     await this.dependencies.updateBot({
       hasSold: false,
       hasBought: true,
     });
-    return this.dependencies.buy();
   }
 
   private shouldSell() {

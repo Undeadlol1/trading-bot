@@ -3,7 +3,7 @@ import { BuySellRepeatBot } from './BuySellRepeatBot';
 
 export interface OrderCreatePayload {
   id?: string;
-  price: number;
+  price?: number;
   botId: string;
   amount: number;
   symbol: string;
@@ -13,7 +13,7 @@ export interface OrderCreatePayload {
 }
 
 export interface Order extends UsualDatabaseFields {
-  price: number;
+  price?: number;
   botId: string;
   amount: number;
   symbol: string;
