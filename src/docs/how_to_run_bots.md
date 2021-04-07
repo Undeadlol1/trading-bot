@@ -9,3 +9,11 @@
 1. Fetch bots and all the info they require from DB
 2. Run bot BotRunnerFactory to prepare bot runners
 3. Run created bot runners in parallel
+
+## TODO
+
+[ ] Create BotRunnerFactory
+
+[ ] Create FetchAndRunBots class/function
+
+[ ] Test to verify that they work properly
