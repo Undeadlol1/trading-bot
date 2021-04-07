@@ -44,8 +44,8 @@ model BuySellRepeatBotRunResult {
 }
 
 model Order {
-  price    Float
   amount   Float
+  price    Float?
   symbol   String
   type     OrderType
   side     OrderSide
