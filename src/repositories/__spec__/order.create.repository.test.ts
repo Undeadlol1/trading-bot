@@ -1,11 +1,10 @@
-import { prisma } from '../../dbs/prisma/PrismaClientSignleton';
-import { BuySellRepeatBotCreatePayload } from '../../entities/BuySellRepeatBot';
 import { OrderCreatePayload } from '../../entities/Order';
-import { BuySellRepeatBotRepo } from '../buy_sell_repeat_bot.repository';
 import { OrderRepository } from '../order.create.repository';
+import { prisma } from '../../dbs/prisma/PrismaClientSignleton';
+import { BuySellRepeatBotRepo } from '../buy_sell_repeat_bot.repository';
+import { BuySellRepeatBotCreatePayload } from '../../entities/BuySellRepeatBot';
 
 const repo = new OrderRepository();
-
 const createPayload: OrderCreatePayload = {
   price: 22,
   botId: '',
