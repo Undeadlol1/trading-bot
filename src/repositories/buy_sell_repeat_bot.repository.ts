@@ -19,4 +19,14 @@ export class BuySellRepeatBotRepo {
   }): Promise<BuySellRepeatBot> {
     return prisma.buySellRepeatBot.update(args);
   }
+
+  async findMany({
+    where,
+    take = 10,
+  }: {
+    where: { isActive?: boolean };
+    take?: number;
+  }): Promise<BuySellRepeatBot[]> {
+    return prisma.buySellRepeatBot.findMany({ where, take });
+  }
 }
