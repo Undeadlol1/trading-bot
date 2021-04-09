@@ -7,7 +7,7 @@ export async function generateRandomBot(): Promise<BuySellRepeatBot> {
     sellAt: 110,
     isActive: true,
     hasSold: false,
-    amountToBuy: 2,
+    amount: 2,
     hasBought: false,
     symbolToBuy: 'BTC',
     currentBalance: 1000,

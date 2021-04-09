@@ -7,23 +7,26 @@ import { createBuySellRepeatBot } from '../buy_sell_repeat_bot.create';
 const botToCreate: BuySellRepeatBotCreatePayload = {
   buyAt: 10,
   sellAt: 11,
+  amount: 10,
   isActive: true,
-  amountToBuy: 10,
-  symbolToBuy: 'BTC',
+  symbol: 'BTCUSDT',
   initialBalance: 1000,
   currentBalance: 1000,
-  symbolToBuyFor: 'USDT',
   isPaperTradingEnabled: true,
 };
 
 const createFunction = jest.fn(() =>
   Promise.resolve(botToCreate as BuySellRepeatBot)
 );
+const updateFunction = jest.fn(() =>
+  Promise.resolve([botToCreate] as BuySellRepeatBot[])
+);
 
 const di = {
   botRepo: {
     create: createFunction,
     update: createFunction,
+    findMany: updateFunction,
   },
 };
 

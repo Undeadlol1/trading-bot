@@ -29,8 +29,8 @@ describe('BUY_SELL_REPEAT runner', () => {
       side: 'SELL',
       botId: bot.id,
       type: 'MARKET',
-      amount: bot.amountToBuy,
-      symbol: bot.symbolToBuy + bot.symbolToBuyFor,
+      amount: bot.amount,
+      symbol: bot.symbol,
     });
   });
 
@@ -54,8 +54,8 @@ describe('BUY_SELL_REPEAT runner', () => {
       side: 'BUY',
       botId: bot.id,
       type: 'MARKET',
-      amount: bot.amountToBuy,
-      symbol: bot.symbolToBuy + bot.symbolToBuyFor,
+      amount: bot.amount,
+      symbol: bot.symbol,
     });
   });
 
@@ -64,7 +64,7 @@ describe('BUY_SELL_REPEAT runner', () => {
     const dependencies = getDependencies();
     bot.buyAt = 100;
     bot.sellAt = 110;
-    bot.amountToBuy = 2;
+    bot.amount = 2;
     bot.initialBalance = 1000;
     bot.currentBalance = 1000;
     ticker.close = 100;
@@ -92,7 +92,7 @@ describe('BUY_SELL_REPEAT runner', () => {
     const dependencies = getDependencies();
     bot.buyAt = 100;
     bot.sellAt = 110;
-    bot.amountToBuy = 2;
+    bot.amount = 2;
     bot.initialBalance = 1000;
     bot.hasBought = true;
     ticker.close = 115;
@@ -137,18 +137,17 @@ describe('BUY_SELL_REPEAT runner', () => {
 function getBot(): BuySellRepeatBot {
   return {
     id: '123',
+    amount: 2,
     buyAt: 100,
     sellAt: 110,
     isActive: true,
     hasSold: false,
-    amountToBuy: 2,
     hasBought: false,
-    symbolToBuy: 'BTC',
+    symbol: 'BTCUSDT',
     currentBalance: 1000,
     initialBalance: 1000,
     createdAt: new Date(),
     updatedAt: new Date(),
-    symbolToBuyFor: 'USDT',
     isPaperTradingEnabled: false,
   };
 }

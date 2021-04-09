@@ -48,8 +48,8 @@ export class BuySellRepeatBotRunner {
       side: 'SELL',
       type: 'MARKET',
       botId: this.bot.id,
-      amount: this.bot.amountToBuy,
-      symbol: this.bot.symbolToBuy + this.bot.symbolToBuyFor,
+      amount: this.bot.amount,
+      symbol: this.bot.symbol,
     });
     await this.dependencies.updateBot({
       where: {
@@ -63,7 +63,7 @@ export class BuySellRepeatBotRunner {
           // NOTE: Will this break with alot of floating point numbers?
           // NOTE: JS is terrible at handling math.
           this.bot.initialBalance +
-          (this.bot.sellAt - this.bot.buyAt) * this.bot.amountToBuy,
+          (this.bot.sellAt - this.bot.buyAt) * this.bot.amount,
       },
     });
   }
@@ -73,8 +73,8 @@ export class BuySellRepeatBotRunner {
       side: 'BUY',
       type: 'MARKET',
       botId: this.bot.id,
-      amount: this.bot.amountToBuy,
-      symbol: this.bot.symbolToBuy + this.bot.symbolToBuyFor,
+      amount: this.bot.amount,
+      symbol: this.bot.symbol,
     });
     await this.dependencies.updateBot({
       where: {

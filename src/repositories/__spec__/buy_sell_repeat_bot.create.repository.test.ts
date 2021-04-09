@@ -7,11 +7,10 @@ const createPayload: BuySellRepeatBotCreatePayload = {
   buyAt: 10,
   sellAt: 11,
   isActive: true,
-  amountToBuy: 1,
-  symbolToBuy: 'BTC',
+  amount: 1,
+  symbol: 'BTCETH',
   initialBalance: 1000,
   currentBalance: 1000,
-  symbolToBuyFor: 'USDT',
   isPaperTradingEnabled: false,
 };
 

@@ -5,10 +5,9 @@ import { UsualDatabaseFields } from './UsualDatabaseFields';
 export interface BuySellRepeatBotCreatePayload {
   buyAt: number;
   sellAt: number;
+  amount: number;
+  symbol: string;
   isActive: boolean;
-  amountToBuy: number;
-  symbolToBuy: string;
-  symbolToBuyFor: string;
   initialBalance: number;
   currentBalance: number;
   isPaperTradingEnabled: boolean;
@@ -17,11 +16,11 @@ export interface BuySellRepeatBotCreatePayload {
 export interface BuySellRepeatBotUpdatePayload {
   buyAt?: number;
   sellAt?: number;
+  symbol?: string;
+  amount?: number;
   hasSold?: boolean;
   isActive?: boolean;
   hasBought?: boolean;
-  symbolToBuy?: string;
-  symbolToBuyFor?: string;
   currentBalance?: number;
   isPaperTradingEnabled?: boolean;
 }

@@ -10,23 +10,21 @@ const repo = new BuySellRepeatBotRepo();
 const createPayload: BuySellRepeatBotCreatePayload = {
   buyAt: 10,
   sellAt: 11,
+  amount: 10,
   isActive: true,
-  amountToBuy: 10,
-  symbolToBuy: 'BTC',
+  symbol: 'BTCUSDT',
   currentBalance: 1000,
   initialBalance: 1000,
-  symbolToBuyFor: 'USDT',
   isPaperTradingEnabled: false,
 };
 const updatePayload: BuySellRepeatBotCreatePayload = {
   buyAt: 12,
   sellAt: 14,
-  amountToBuy: 10,
+  amount: 10,
   isActive: false,
-  symbolToBuy: 'BTC',
+  symbol: 'BTCUSDT',
   currentBalance: 1000,
   initialBalance: 1000,
-  symbolToBuyFor: 'USDT',
   isPaperTradingEnabled: false,
 };
 
