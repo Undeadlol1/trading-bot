@@ -8,7 +8,6 @@ export async function getAndRunBots({
   di: { botRepo: BuySellRepeatBotRepo; createOrder: OrderRepository };
 }): Promise<void> {
   const bots = await di.botRepo.findMany({ where: { isActive: true } });
-  //   const tickers = await
   const botRunners: BuySellRepeatBotRunner[] = bots.map(bot => {
     const runner = new BuySellRepeatBotRunner({
       bot,
