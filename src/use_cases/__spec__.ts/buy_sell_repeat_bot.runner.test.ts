@@ -77,8 +77,13 @@ describe('BUY_SELL_REPEAT runner', () => {
     await runner.run();
 
     expect(dependencies.updateBot).toHaveBeenCalledWith({
-      hasSold: false,
-      hasBought: true,
+      where: {
+        id: bot.id,
+      },
+      data: {
+        hasSold: false,
+        hasBought: true,
+      },
     });
   });
 
@@ -101,9 +106,14 @@ describe('BUY_SELL_REPEAT runner', () => {
 
     expect(dependencies.updateBot).toBeCalledTimes(1);
     expect(dependencies.updateBot).toBeCalledWith({
-      hasSold: true,
-      hasBought: false,
-      currentBalance: 1020,
+      where: {
+        id: bot.id,
+      },
+      data: {
+        hasSold: true,
+        hasBought: false,
+        currentBalance: 1020,
+      },
     });
   });
 

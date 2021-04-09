@@ -18,7 +18,7 @@ export async function getAndRunBots({
         symbol: bot.symbolToBuy,
       },
       dependencies: {
-        updateBot: di.botRepo,
+        updateBot: di.botRepo.update,
         createOrder: di.createOrder.create,
       },
     });

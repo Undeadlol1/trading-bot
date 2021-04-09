@@ -1,13 +1,16 @@
-import { Order, OrderCreatePayload } from '../entities/Order';
 import { BuySellRepeatBot } from '../entities/BuySellRepeatBot';
 import { CryptoCurrencyTicker } from '../entities/CryptoCurrencyTicker';
+import { Order, OrderCreatePayload } from '../entities/Order';
 
 interface Dependencies {
   createOrder: (args: OrderCreatePayload) => Promise<Order>;
   updateBot: (args: {
-    hasSold: boolean;
-    hasBought: boolean;
-    currentBalance?: number;
+    where: { id: string };
+    data: {
+      hasSold: boolean;
+      hasBought: boolean;
+      currentBalance?: number;
+    };
   }) => Promise<BuySellRepeatBot>;
 }
 
@@ -49,14 +52,19 @@ export class BuySellRepeatBotRunner {
       symbol: this.bot.symbolToBuy + this.bot.symbolToBuyFor,
     });
     await this.dependencies.updateBot({
-      hasSold: true,
-      hasBought: false,
-      currentBalance:
-        // NOTE: I am not sure about this calculation.
-        // NOTE: Will this break with alot of floating point numbers?
-        // NOTE: JS is terrible at handling math.
-        this.bot.initialBalance +
-        (this.bot.sellAt - this.bot.buyAt) * this.bot.amountToBuy,
+      where: {
+        id: this.bot.id,
+      },
+      data: {
+        hasSold: true,
+        hasBought: false,
+        currentBalance:
+          // NOTE: I am not sure about this calculation.
+          // NOTE: Will this break with alot of floating point numbers?
+          // NOTE: JS is terrible at handling math.
+          this.bot.initialBalance +
+          (this.bot.sellAt - this.bot.buyAt) * this.bot.amountToBuy,
+      },
     });
   }
 
@@ -69,8 +77,13 @@ export class BuySellRepeatBotRunner {
       symbol: this.bot.symbolToBuy + this.bot.symbolToBuyFor,
     });
     await this.dependencies.updateBot({
-      hasSold: false,
-      hasBought: true,
+      where: {
+        id: this.bot.id,
+      },
+      data: {
+        hasSold: false,
+        hasBought: true,
+      },
     });
   }
 
