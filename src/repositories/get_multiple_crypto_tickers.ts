@@ -9,7 +9,14 @@ export class GetMultipleCryptoTickers {
   }): Promise<CryptoCurrencyTicker[]> {
     const exchange = new ccxt.binance({ enableRateLimit: false });
     const ccxtTickers = await exchange.fetchTickers(symbols);
-    const properTickers = [];
-    return ccxtTickers;
+    const formattedTickers: CryptoCurrencyTicker[] = [];
+
+    for (var key in ccxtTickers) {
+      if (ccxtTickers.hasOwnProperty(key)) {
+        formattedTickers.push(ccxtTickers[key] as CryptoCurrencyTicker);
+      }
+    }
+
+    return formattedTickers;
   }
 }
