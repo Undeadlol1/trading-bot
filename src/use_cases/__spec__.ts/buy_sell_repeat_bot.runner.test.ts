@@ -26,6 +26,7 @@ describe('BUY_SELL_REPEAT runner', () => {
     await runner.run();
 
     expect(dependencies.createOrder).toBeCalledWith({
+      price: null,
       side: 'SELL',
       botId: bot.id,
       type: 'MARKET',
@@ -51,6 +52,7 @@ describe('BUY_SELL_REPEAT runner', () => {
     await runner.run();
 
     expect(dependencies.createOrder).toBeCalledWith({
+      price: null,
       side: 'BUY',
       botId: bot.id,
       type: 'MARKET',

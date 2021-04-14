@@ -45,6 +45,7 @@ export class BuySellRepeatBotRunner {
 
   private async sellAndUpdateBot() {
     await this.dependencies.createOrder({
+      price: null,
       side: 'SELL',
       type: 'MARKET',
       botId: this.bot.id,
@@ -70,6 +71,7 @@ export class BuySellRepeatBotRunner {
 
   private async buyAndUpdateBot() {
     await this.dependencies.createOrder({
+      price: null,
       side: 'BUY',
       type: 'MARKET',
       botId: this.bot.id,
