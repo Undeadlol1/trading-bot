@@ -34,11 +34,11 @@ export class BuySellRepeatBotRunner {
       return;
     }
 
-    if (this._shouldBuy()) {
+    if (!this.bot.hasSold && this.ticker.close <= this.bot.sellAt) {
       return this._buyAndUpdateBot();
     }
 
-    if (this._shouldSell()) {
+    if (!this.bot.hasSold && this.ticker.close >= this.bot.sellAt) {
       return this._sellAndUpdateBot();
     }
   }
@@ -63,14 +63,6 @@ export class BuySellRepeatBotRunner {
       hasSold: false,
       hasBought: true,
     });
-  }
-
-  private _shouldSell() {
-    return !this.bot.hasSold && this.ticker.close >= this.bot.sellAt;
-  }
-
-  private _shouldBuy() {
-    return !this.bot.hasBought && this.ticker.close <= this.bot.buyAt;
   }
 
   private async _createOrder({ side }: { side: 'SELL' | 'BUY' }) {
