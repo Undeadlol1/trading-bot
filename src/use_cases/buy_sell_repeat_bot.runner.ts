@@ -34,66 +34,66 @@ export class BuySellRepeatBotRunner {
       return;
     }
 
-    if (this.shouldBuy()) {
-      return this.buyAndUpdateBot();
+    if (this._shouldBuy()) {
+      return this._buyAndUpdateBot();
     }
 
-    if (this.shouldSell()) {
-      return this.sellAndUpdateBot();
+    if (this._shouldSell()) {
+      return this._sellAndUpdateBot();
     }
   }
 
-  private async sellAndUpdateBot() {
-    await this.dependencies.createOrder({
-      price: null,
-      side: 'SELL',
-      type: 'MARKET',
-      botId: this.bot.id,
-      amount: this.bot.amount,
-      symbol: this.bot.symbol,
-    });
-    await this.dependencies.updateBot({
-      where: {
-        id: this.bot.id,
-      },
-      data: {
-        hasSold: true,
-        hasBought: false,
-        currentBalance:
-          // NOTE: I am not sure about this calculation.
-          // NOTE: Will this break with alot of floating point numbers?
-          // NOTE: JS is terrible at handling math.
-          this.bot.initialBalance +
-          (this.bot.sellAt - this.bot.buyAt) * this.bot.amount,
-      },
+  private async _sellAndUpdateBot() {
+    await this._createOrder({ side: 'SELL' });
+    await this._updateBot({
+      hasSold: true,
+      hasBought: false,
+      currentBalance:
+        // NOTE: I am not sure about this calculation.
+        // NOTE: Will this break with alot of floating point numbers?
+        // NOTE: JS is terrible at handling math.
+        this.bot.initialBalance +
+        (this.bot.sellAt - this.bot.buyAt) * this.bot.amount,
     });
   }
 
-  private async buyAndUpdateBot() {
-    await this.dependencies.createOrder({
-      price: null,
-      side: 'BUY',
-      type: 'MARKET',
-      botId: this.bot.id,
-      amount: this.bot.amount,
-      symbol: this.bot.symbol,
-    });
-    await this.dependencies.updateBot({
-      where: {
-        id: this.bot.id,
-      },
-      data: {
-        hasSold: false,
-        hasBought: true,
-      },
+  private async _buyAndUpdateBot() {
+    await this._createOrder({ side: 'BUY' });
+    await this._updateBot({
+      hasSold: false,
+      hasBought: true,
     });
   }
 
-  private shouldSell() {
+  private _shouldSell() {
     return !this.bot.hasSold && this.ticker.close >= this.bot.sellAt;
   }
 
-  private shouldBuy() {
+  private _shouldBuy() {
     return !this.bot.hasBought && this.ticker.close <= this.bot.buyAt;
+  }
+
+  private async _createOrder({ side }: { side: 'SELL' | 'BUY' }) {
+    await this.dependencies.createOrder({
+      side,
+      price: null,
+      type: 'MARKET',
+      botId: this.bot.id,
+      amount: this.bot.amount,
+      symbol: this.bot.symbol,
+    });
+  }
+
+  private async _updateBot(data: {
+    hasSold: boolean;
+    hasBought: boolean;
+    currentBalance?: number;
+  }) {
+    await this.dependencies.updateBot({
+      data,
+      where: {
+        id: this.bot.id,
+      },
+    });
   }
 }

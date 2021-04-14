@@ -17,10 +17,10 @@ model BuySellRepeatBot {
   sellAt                Float
   initialBalance        Float
   currentBalance        Float
-  hasBought             Boolean @default(false)
-  hasSold               Boolean @default(false)
-  isActive              Boolean @default(false)
-  isPaperTradingEnabled Boolean @default(false)
+  hasBought             Boolean? @default(false)
+  hasSold               Boolean? @default(false)
+  isActive              Boolean  @default(false)
+  isPaperTradingEnabled Boolean  @default(false)
 
   limitOrders Order[]
   results     BuySellRepeatBotRunResult[]
