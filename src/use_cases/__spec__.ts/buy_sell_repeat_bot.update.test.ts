@@ -6,9 +6,12 @@ const updatePayload: BuySellRepeatBotUpdatePayload = {
   buyAt: 10,
   sellAt: 11,
   isActive: true,
-  symbolToBuy: 'BTC',
-  symbolToBuyFor: 'USDT',
+  symbol: 'BTCUSDT',
 };
+
+const findManyFunction = jest.fn(() =>
+  Promise.resolve([] as BuySellRepeatBot[])
+);
 
 describe('Update BUY_SELL_REPEAT Bot', () => {
   it('calls bot repository', async () => {
@@ -19,7 +22,11 @@ describe('Update BUY_SELL_REPEAT Bot', () => {
       id: '123',
       data: updatePayload,
       dependencies: {
-        botRepo: { create: createFunctionMock, update: createFunctionMock },
+        botRepo: {
+          create: createFunctionMock,
+          update: createFunctionMock,
+          findMany: findManyFunction,
+        },
       },
     });
     expect(createFunctionMock.mock.calls.length === 1).toBeTruthy();
@@ -33,7 +40,11 @@ describe('Update BUY_SELL_REPEAT Bot', () => {
       id: '123',
       data: updatePayload,
       dependencies: {
-        botRepo: { create: createFunctionMock, update: createFunctionMock },
+        botRepo: {
+          create: createFunctionMock,
+          update: createFunctionMock,
+          findMany: findManyFunction,
+        },
       },
     });
     expect(functionResult).toMatchObject(updatePayload);
