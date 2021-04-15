@@ -55,12 +55,14 @@
     "@prisma/client": "^2.19.0",
     "ccxt": "^1.39.52",
     "lodash": "^4.17.20",
+    "mathjs": "^9.3.2",
     "mongodb": "^3.6.4",
     "mongoose": "^5.11.18",
     "signale": "^1.4.0",
     "tsdx": "^0.14.1"
   },
   "devDependencies": {
+    "@types/mathjs": "^6.0.11",
     "prisma": "^2.19.0"
   }
 }

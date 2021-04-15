@@ -1,15 +1,15 @@
+import { BuySellRepeatBot } from '../entities/BuySellRepeatBot';
 import { BuySellRepeatBotRunner } from './buy_sell_repeat_bot.runner';
 import { OrderRepository } from '../repositories/order.create.repository';
 import { BuySellRepeatBotRepo } from '../repositories/buy_sell_repeat_bot.repository';
-import { BuySellRepeatBot } from '../entities/BuySellRepeatBot';
 import { GetMultipleCryptoTickers } from '../repositories/get_multiple_crypto_tickers.repository';
 
 export async function getAndRunBots({
   di,
 }: {
   di: {
-    botRepo: BuySellRepeatBotRepo;
     createOrder: OrderRepository;
+    botRepo: BuySellRepeatBotRepo;
     getTickers: GetMultipleCryptoTickers;
   };
 }): Promise<void> {

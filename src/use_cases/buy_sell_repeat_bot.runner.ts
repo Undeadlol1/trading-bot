@@ -1,6 +1,8 @@
+// TODO add "Math" or "SafeMath" class and use it in DI.
+import { chain as chainMathExpressions } from 'mathjs';
+import { Order, OrderCreatePayload } from '../entities/Order';
 import { BuySellRepeatBot } from '../entities/BuySellRepeatBot';
 import { CryptoCurrencyTicker } from '../entities/CryptoCurrencyTicker';
-import { Order, OrderCreatePayload } from '../entities/Order';
 
 interface Dependencies {
   createOrder: (args: OrderCreatePayload) => Promise<Order>;
@@ -48,12 +50,11 @@ export class BuySellRepeatBotRunner {
     await this._updateBot({
       hasSold: true,
       hasBought: false,
-      currentBalance:
-        // NOTE: I am not sure about this calculation.
-        // NOTE: Will this break with alot of floating point numbers?
-        // NOTE: JS is terrible at handling math.
-        this.bot.initialBalance +
-        (this.bot.sellAt - this.bot.buyAt) * this.bot.amount,
+      currentBalance: chainMathExpressions(this.bot.sellAt)
+        .subtract(this.bot.buyAt)
+        .multiply(this.bot.amount)
+        .add(this.bot.initialBalance)
+        .done(),
     });
   }
 
