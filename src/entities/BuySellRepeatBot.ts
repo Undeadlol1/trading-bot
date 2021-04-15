@@ -1,5 +1,4 @@
-import { UsualDatabaseFields } from './UsualDatabaseFields';
-
+import { Bot } from './Bot';
 // TODO: i do not like the fact that this interface is hidden in this file.
 // TODO: i am also not sure about the name
 export interface BuySellRepeatBotCreatePayload {
@@ -25,9 +24,7 @@ export interface BuySellRepeatBotUpdatePayload {
   isPaperTradingEnabled?: boolean;
 }
 
-export interface BuySellRepeatBot
-  extends BuySellRepeatBotCreatePayload,
-    UsualDatabaseFields {
+export interface BuySellRepeatBot extends BuySellRepeatBotCreatePayload, Bot {
   hasSold: boolean;
   hasBought: boolean;
 }
