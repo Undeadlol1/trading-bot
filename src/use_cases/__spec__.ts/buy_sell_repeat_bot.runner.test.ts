@@ -1,7 +1,7 @@
+import { Order } from '../../entities/Order';
 import { BuySellRepeatBot } from '../../entities/BuySellRepeatBot';
 import { BuySellRepeatBotRunner } from '../buy_sell_repeat_bot.runner';
 import { CryptoCurrencyTicker } from '../../entities/CryptoCurrencyTicker';
-import { Order } from '../../entities/Order';
 
 const ticker: CryptoCurrencyTicker = {
   close: 100,
